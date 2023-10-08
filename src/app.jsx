@@ -1035,24 +1035,76 @@ function KeysModal ({ dismissModal }) {
   )
 }
 
-function Main () {
-  console.log('Loading...')
-  const [showSettings, setShowSettings] = useState(false)
-  const [showKeys, setShowKeys] = useState(false)
+function MissionPicker ({ setActiveMission }) {
+  const [missions, setMissions] = useState([])
+  useEffect(() => {
+    fetch('http://localhost:8889/api/configure/missions', {
+      referrerPolicy: 'no-referrer',
+      body: null,
+      method: 'GET',
+      mode: 'cors'
+    }).then(res => res.json())
+      .then(res => {
+        console.log('Missions available on server', res)
+        setMissions(res.missions)
+      })
+  }, [])
+
+  // TODO: See if we're missing any attributions
+  const attributionElements = []
+  for (const attribution of require('./attributions')) {
+    attributionElements.push(
+      <li>
+        <div>
+          <a class='attribution_library' href='https://codemirror.net/' target='_blank' rel='noreferrer'>{attribution.library}</a>
+          <div class='attribution_version'>v{attribution.version}</div>
+        </div>
+        <div>
+          <div class='attribution_by'>by</div>
+          <a class='attribution_author' href='https://github.com/marijnh' target='_blank' rel='noreferrer'>{attribution.author}</a>
+          <div class='attribution_under'>, under</div>
+          <a class='attribution_license' href={attribution.licenselink} target='_blank' rel='noreferrer'>{attribution.license}</a>
+          <a class='attribution_github mdi mdi-github-circle mdi-18px' href={attribution.githublink} target='_blank' rel='noreferrer' />
+        </div>
+      </li>
+    )
+  }
 
   return (
+    <div class='landingPage' style='position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 1;'><div class='gradient' /><div class='landingBottom'><div class='imagecredit'><div>Wind at Work</div><a target='__blank' rel='noreferrer' href='https://photojournal.jpl.nasa.gov/catalog/PIA20461' title='Splash Image Credit: NASA/JPL-Caltech/Univ. of Arizona'><i class='mdi mdi-information-outline mdi-14px' /></a></div><div class='version' style='cursor: pointer;'>v2.10.0</div></div><div style='position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);' /><div id='title' style='z-index: 200;'><p class='unselectable' style='font-size: 40px; opacity: 1; cursor: default; padding: 0px 10px;'><img src='/images/logos/mmgis.png' alt='Full logo' /></p></div><div id='landingPanel' /><div id='landingMissionsWrapper'>
+      <ul style='margin: 0px; padding: 0px 20px 0px 0px; height: calc(100vh - 200px); overflow-y: auto;'>
+        {
+          missions.map(mission => <li class='landingPageMission' onClick={() => setActiveMission(mission)}>{mission}</li>)
+        }
+      </ul></div><div id='attributionIcon' class='mdi mdi-dna mdi-24px' title='Attributions' /><div id='attributions'>
+        <div id='attributionsContent'>
+          <div id='attributionsTitle'>
+            <div>
+              <a class='attributionTitle_library' href='' target='_blank' rel='noreferrer'><img src='public/images/logos/mmgis.png' alt='Full logo' height='20px' /></a>
+              <div class='attributionTitle_version'>v2.10.0</div>
+            </div>
+            <div>
+              <div class='attributionTitle_by' />
+              <a class='attributionTitle_author' href='' target='_blank' rel='noreferrer'>NASA/JPL-Caltech</a>
+              <div class='attributionTitle_under'>, under</div>
+              <a class='attributionTitle_license' href='https://www.apache.org/licenses/LICENSE-2.0' target='_blank' rel='noreferrer'>Apache-2.0</a>
+              <a class='attributionTitle_github mdi mdi-github-circle mdi-36px' href='https://github.com/NASA-AMMOS/MMGIS' target='_blank' rel='noreferrer' />
+            </div>
+          </div>
+          <ul>
+            {attributionElements}
+            <li>And to all the node packages within package.json and a special thanks to every contributor.</li></ul>
+        </div>
+      </div></div>
+  )
+}
+
+function Mission ({ missionData }) {
+  console.debug('got mission data', missionData)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showKeys, setShowKeys] = useState(false)
+  return (
     <div id='main-container' style='opacity: 1; filter: blur(0px);'>
-      <link rel='stylesheet' href='components/main.css' />
-      <link rel='stylesheet' href='components/mmgis.css' />
-      <link rel='stylesheet' href='components/LayersTool.css' />
-      <link rel='stylesheet' href='components/viewer.css' />
-      <link rel='stylesheet' href='components/droppy.css' />
-      <link rel='stylesheet' href='components/search.css' />
-      <link rel='stylesheet' href='components/modal.css' />
-      <link rel='stylesheet' href='components/InfoTool.css' />
-      <link rel='stylesheet' href='components/toolbar.css' />
-      <link rel='stylesheet' href='components/mmgisUI.css' />
-      <link rel='stylesheet' href='css/materialdesignicons/materialdesignicons.css' />
       <TopBar />
       <BottomBar showKeysModal={() => setShowKeys(true)} showSettingsModal={() => setShowSettings(true)} />
       <ToolContainer />
@@ -1074,5 +1126,30 @@ function Main () {
   )
 }
 
+function Main () {
+  console.log('Loading...')
+  const [activeMission, setActiveMission] = useState(null)
+
+  return (
+    <Fragment>
+      <link rel='stylesheet' href='components/main.css' />
+      <link rel='stylesheet' href='components/mmgis.css' />
+      <link rel='stylesheet' href='components/LayersTool.css' />
+      <link rel='stylesheet' href='components/viewer.css' />
+      <link rel='stylesheet' href='components/droppy.css' />
+      <link rel='stylesheet' href='components/search.css' />
+      <link rel='stylesheet' href='components/modal.css' />
+      <link rel='stylesheet' href='components/InfoTool.css' />
+      <link rel='stylesheet' href='components/toolbar.css' />
+      <link rel='stylesheet' href='components/mmgisUI.css' />
+      <link rel='stylesheet' href='components/LandingPage.css' />
+      <link rel='stylesheet' href='css/materialdesignicons/materialdesignicons.css' />
+      {!activeMission && <MissionPicker setActiveMission={setActiveMission} />}
+      {activeMission && <Mission missionData={activeMission} />}
+    </Fragment>
+  )
+}
+
 render(<Main />, document.body)
 document.querySelector('.LoadingPage').style.display = 'none'
+document.getElementById('main-container').remove()

@@ -245,7 +245,7 @@
   "standard": {
     "ignore": [
       "/config/**/*.js",
-      "/documentation/**/*.js"
+      "/public/documentation/**/*.js"
     ]
   }
 }

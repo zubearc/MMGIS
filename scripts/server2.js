@@ -246,7 +246,11 @@ function ensureAdmin (toLoginPage, denyLongTermTokens) {
       url.endsWith('/api/geodatasets/search') ||
       url.endsWith('/api/datasets/get') ||
       req.session.permission === '111'
-    ) { next() } else if (toLoginPage) res.render('adminlogin', { user: req.user })
+    ) {
+      // TODO: allow CORS here?
+      // res.setHeader('Access-Control-Allow-Origin', '*')
+      next()
+    } else if (toLoginPage) res.render('adminlogin', { user: req.user })
     else if (!denyLongTermTokens && req.headers.authorization) {
       validateLongTermToken(
         req.headers.authorization,
