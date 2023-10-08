@@ -46,6 +46,14 @@
 <div id="main-container"></div>
 <footer></footer>
 
+<script>
+  globalThis.appConfig ??= {}
+  if (!Object.keys(globalThis.appConfig).length) {
+    globalThis.appConfig = {
+      "baseURL": "http://localhost:8889"
+    }
+  }
+</script>
 <script src="bundle.js"></script>
 <style>
   #map {
