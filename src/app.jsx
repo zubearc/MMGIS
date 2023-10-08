@@ -162,7 +162,7 @@ function createDraggable (element, parent, leftPadding = 0) {
   createDragHandler(element, handleUpdate, handleRelease)
 }
 
-function LayerTool () {
+function LayerTool ({ layers }) {
   useEffect(() => {
     let dragSrcEl = null
     function handleDragStart (e) {
@@ -218,6 +218,15 @@ function LayerTool () {
     registerDraggableElements(items)
   }, [])
 
+  console.log('Layers are', layers)
+  const layerElements = []
+  for (const layer of layers) {
+    layerElements.push(<ToolPanelLayer layerData={layer} name={layer.name} depth={0} />)
+    for (const subLayer of layer.sublayers) {
+      layerElements.push(<ToolPanelLayer layerData={layer} name={subLayer.name} depth={1} />)
+    }
+  }
+
   return (
     <div id='layersTool'>
       <div id='layersToolHeader'>
@@ -252,27 +261,40 @@ function LayerTool () {
       </div>
       <div id='layersToolContent'>
         <ul id='layersToolList'>
-          <ToolPanelLayer name='A Header' />
-          <ToolPanelLayer name='S1 Drawings' />
+          {
+            layerElements
+          }
+          {/* <ToolPanelLayer name='A Header' depth={0} />
+          <ToolPanelLayer name='S1 Drawings' depth={1} />
           <ToolPanelLayer name='S2 Drawings' />
           <ToolPanelLayer name='ChemCam' />
           <ToolPanelLayer name='Waypoints' />
           <ToolPanelLayer name='Polygon' />
           <ToolPanelLayer name='Line' />
           <ToolPanelLayer name='Tile with DEM' />
-          <ToolPanelLayer name='Maps' />
+          <ToolPanelLayer name='Maps' /> */}
         </ul>
       </div>
     </div>
   )
 }
 
-function ToolPanelLayer ({ name }) {
+function ToolPanelLayer ({ name, layerData, depth = 0 }) {
   const id = '34de02bf-cece-4e2d-b29a-48dadb5c4408'
   const parentId = 'f6561467-5b7c-407e-b008-ac667704a1c3'
+
+  const [hasOpenSettings, setHasOpenSettings] = useState(false)
+
+  const layerId = 'LayersTooluuid' + id
+  function setDraggable (layerId, draggable) {
+    const element = document.getElementById(layerId)
+    element.draggable = draggable
+  }
+
+  // onMouseDown={() => { setDraggable(layerId, true) }} onMouseLeave={() => setDraggable(layerId, false)} onMouseUp={() => setDraggable(layerId, false)}
   return (
-    <li id={'LayersTooluuid' + id} class='panel-layers' draggable type='vector' depth='1' name={id} parent={parentId} style='margin-bottom: 1px; overflow: hidden; height: auto; margin-top: 1px;'>
-      <div class='title' id={'layerstartuuid' + id} style='border-left: 13px solid var(--color-a);'>
+    <li id={'LayersTooluuid' + id} class={`panel-layers ${hasOpenSettings && 'gears_on'}`} draggable={!hasOpenSettings} type='vector' depth='1' name={id} parent={parentId} style='margin-bottom: 1px; overflow: hidden; height: auto; margin-top: 1px;'>
+      <div class='title' id={'layerstartuuid' + id} style={`border-left: ${13 * depth}px solid var(--color-a);`}>
         <div class='layersToolColor vector'>
           <i class='mdi mdi-drag-vertical mdi-12px' />
         </div>
@@ -286,39 +308,96 @@ function ToolPanelLayer ({ name }) {
         <div title='Download' class='layerDownload' id={'layerexportuuid' + id} stype='vector' layername={id}>
           <i class='mdi mdi-download mdi-18px' name='layerexport' />
         </div>
-        <div title='Settings' class='gears' id={'layersettingsuuid' + id} type='vector' layername={id}>
+        <div title='Settings' class='gears' id={'layersettingsuuid' + id} onClick={() => setHasOpenSettings(!hasOpenSettings)} type='vector' layername={id}>
           <i class='mdi mdi-tune mdi-18px' name='layersettings' />
         </div>
         <div title='Information' class='LayersToolInfo' id={'layerinfouuid' + id} stype='vector' layername={id}>
           <i class='mdi mdi-information-outline mdi-18px' name='layerinfo' />
         </div>
       </div>
-      <div class='layerExport vector'>
-        <ul>
-          <li>
-            <div class='layersToolExportSourceGeoJSON'>
-              <div>Export GeoJSON </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class='timeDisplay settings vector' />
-      <div class='settings settingsmainvector'>
-        <div class='layerSettingsTitle'>
-          <div>Layer Settings</div>
-          <div class='reset' title='Reset Settings'>
-            <i class='mdi mdi-restore mdi-18px' />
-          </div>
+      <div>
+        <div class='layerExport vector'>
+          <ul>
+            <li>
+              <div class='layersToolExportSourceGeoJSON'>
+                <div>Export GeoJSON </div>
+              </div>
+            </li>
+          </ul>
         </div>
-        <ul>
-          <li>
-            <div>
-              <div>Opacity</div>
-              <input class='transparencyslider slider2' layername={id} type='range' min='0' max='1' step='0.01' value='1' default='1' />
-            </div>
-          </li>
-        </ul>
+        {
+          hasOpenSettings
+            ? (
+              <Fragment>
+                {
+                layerData.time && <div class='timeDisplay settings vector'>
+                  <ul>
+                    <li>
+                      <div>
+                        <div>Start Time</div>
+                        <label class='starttime uuidfc8cddbf-daec-434d-8d70-98ec9a093ba2'>2022-08-10T00:00:00.000Z</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div>End Time</div>
+                        <label class='endtime uuidfc8cddbf-daec-434d-8d70-98ec9a093ba2'>2023-10-30T00:00:00.000Z</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              }
+                <div class='settings settingsmainvector'>
+                  <div class='layerSettingsTitle'>
+                    <div>Layer Settings</div>
+                    <div class='reset' title='Reset Settings'>
+                      <i class='mdi mdi-restore mdi-18px' />
+                    </div>
+                  </div>
+                  <ul>
+                    <li>
+                      <div>
+                        <div>Opacity</div>
+                        <input class='transparencyslider slider2' layername='ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13' type='range' min='0' max='1' step='0.01' value='0.7' default='0.7' />
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div>Brightness</div>
+                        <input class='tilefilterslider slider2' filter='brightness' unit='%' layername='ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13' type='range' min='0' max='3' step='0.05' value='1' default='1' />
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div>Contrast</div>
+                        <input class='tilefilterslider slider2' filter='contrast' unit='%' layername='ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13' type='range' min='0' max='4' step='0.05' value='1' default='1' />
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div>Saturation</div>
+                        <input class='tilefilterslider slider2' filter='saturate' unit='%' layername='ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13' type='range' min='0' max='4' step='0.05' value='1' default='1' />
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div>Blend</div>
+                        <select class='tileblender dropdown' layername='ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13'>
+                          <option value='unset' selected=''>None</option>
+                          <option value='color'>Color</option>
+                          <option value='overlay'>Overlay</option>
+                        </select>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </Fragment>
+              )
+            : null
+        }
+
       </div>
+
     </li>
   )
 }
@@ -379,7 +458,7 @@ function SitesTool () {
   )
 }
 
-function ToolPanel ({ shownTool }) {
+function ToolPanel ({ shownTool, missionData }) {
   useEffect(() => {
     const element = document.getElementById('toolPanelDrag')
     const parent = document.getElementById('toolPanel')
@@ -394,7 +473,7 @@ function ToolPanel ({ shownTool }) {
     <Fragment>
       <div id='toolPanel' style='position: absolute; width: 340px; top: 0px; height: 100%; left: 40px; background: var(--color-k); transition: width 0.2s ease-out 0s; overflow: hidden; z-index: 1400;'>
         <div style='height: 100%;'>
-          {shownTool === 'layer' ? <LayerTool /> : null}
+          {shownTool === 'layer' ? <LayerTool layers={missionData.layers} /> : null}
           {shownTool === 'info' ? <InfoTool /> : null}
           {shownTool === 'sites' ? <SitesTool /> : null}
         </div>
@@ -473,12 +552,12 @@ function ToolBar ({ shownTool, setShownTool }) {
   )
 }
 
-function ToolContainer () {
+function ToolContainer ({ missionData }) {
   const [shownTool, setShownTool] = useState('layer')
 
   return (
     <Fragment>
-      <ToolPanel shownTool={shownTool} />
+      <ToolPanel shownTool={shownTool} missionData={missionData} />
       <ToolBar shownTool={shownTool} setShownTool={setShownTool} />
     </Fragment>
   )
@@ -1036,9 +1115,10 @@ function KeysModal ({ dismissModal }) {
 }
 
 function MissionPicker ({ setActiveMission }) {
+  const config = globalThis.appConfig
   const [missions, setMissions] = useState([])
   useEffect(() => {
-    fetch('http://localhost:8889/api/configure/missions', {
+    fetch(`${config.baseURL}/api/configure/missions`, {
       referrerPolicy: 'no-referrer',
       body: null,
       method: 'GET',
@@ -1054,7 +1134,7 @@ function MissionPicker ({ setActiveMission }) {
   const attributionElements = []
   for (const attribution of require('./attributions')) {
     attributionElements.push(
-      <li>
+      <li key={attribution.library}>
         <div>
           <a class='attribution_library' href='https://codemirror.net/' target='_blank' rel='noreferrer'>{attribution.library}</a>
           <div class='attribution_version'>v{attribution.version}</div>
@@ -1074,7 +1154,7 @@ function MissionPicker ({ setActiveMission }) {
     <div class='landingPage' style='position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 1;'><div class='gradient' /><div class='landingBottom'><div class='imagecredit'><div>Wind at Work</div><a target='__blank' rel='noreferrer' href='https://photojournal.jpl.nasa.gov/catalog/PIA20461' title='Splash Image Credit: NASA/JPL-Caltech/Univ. of Arizona'><i class='mdi mdi-information-outline mdi-14px' /></a></div><div class='version' style='cursor: pointer;'>v2.10.0</div></div><div style='position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);' /><div id='title' style='z-index: 200;'><p class='unselectable' style='font-size: 40px; opacity: 1; cursor: default; padding: 0px 10px;'><img src='/images/logos/mmgis.png' alt='Full logo' /></p></div><div id='landingPanel' /><div id='landingMissionsWrapper'>
       <ul style='margin: 0px; padding: 0px 20px 0px 0px; height: calc(100vh - 200px); overflow-y: auto;'>
         {
-          missions.map(mission => <li class='landingPageMission' onClick={() => setActiveMission(mission)}>{mission}</li>)
+          missions.map((mission, ix) => <li key={ix} class='landingPageMission' onClick={() => setActiveMission(mission)}>{mission}</li>)
         }
       </ul></div><div id='attributionIcon' class='mdi mdi-dna mdi-24px' title='Attributions' /><div id='attributions'>
         <div id='attributionsContent'>
@@ -1107,7 +1187,7 @@ function Mission ({ missionData }) {
     <div id='main-container' style='opacity: 1; filter: blur(0px);'>
       <TopBar />
       <BottomBar showKeysModal={() => setShowKeys(true)} showSettingsModal={() => setShowSettings(true)} />
-      <ToolContainer />
+      <ToolContainer missionData={missionData} />
       <SplitScreens />
       {showSettings && <SettingsModal dismissModal={() => setShowSettings(false)} />}
       {showKeys && <KeysModal dismissModal={() => setShowKeys(false)} />}
@@ -1127,8 +1207,16 @@ function Mission ({ missionData }) {
 }
 
 function Main () {
+  const config = globalThis.appConfig
   console.log('Loading...')
+  const [activeMissionData, setActiveMissionData] = useState(null)
   const [activeMission, setActiveMission] = useState(null)
+
+  async function updateActiveMission (name) {
+    const data = await fetch(`${config.baseURL}/api/configure/get?mission=${name}`, {}).then(res => res.json())
+    setActiveMission(name)
+    setActiveMissionData(data)
+  }
 
   return (
     <Fragment>
@@ -1144,8 +1232,8 @@ function Main () {
       <link rel='stylesheet' href='components/mmgisUI.css' />
       <link rel='stylesheet' href='components/LandingPage.css' />
       <link rel='stylesheet' href='css/materialdesignicons/materialdesignicons.css' />
-      {!activeMission && <MissionPicker setActiveMission={setActiveMission} />}
-      {activeMission && <Mission missionData={activeMission} />}
+      {!activeMission && <MissionPicker setActiveMission={updateActiveMission} />}
+      {activeMissionData && <Mission missionData={activeMissionData} />}
     </Fragment>
   )
 }
