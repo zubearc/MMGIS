@@ -41,7 +41,8 @@
     "build:dev": "webpack --mode development",
     "lint": "standard",
     "fix": "standard --fix",
-    "eslint": "eslint --version"
+    "eslint": "eslint --version",
+    "test": "npm run lint"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.1",

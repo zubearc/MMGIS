@@ -23,6 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     # Yarn is faster than npm
     - run: yarn install
+    - run: npm run build
     - run: npm test
     # For the purpose of this demo, we'll try to always deploy on each push to master
     - name: Deploy
