@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>MMGIS</title>
+  <meta charset="utf-8" />
+  <link id="favicon" rel="shortcut icon" href="./images/logos/logo.png" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#1d1f20" />
+  <meta name="description"
+    content="A web-based mapping and localization solution for science operation on planetary missions." />
+  <link rel="stylesheet" href="splash.css">
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <div class="LoadingPage">
+    <div class="planet"></div>
+    <div class="planet2"></div>
+    <div class="planet3"></div>
+    <div id="title">
+      <p>
+        <img src="./images/logos/mmgis.png" alt="Full logo" />
+      </p>
+    </div>
+    <div id="loading2">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <script>
+    globalThis.mmgisglobal = {
+      version: '3.0.0',
+    }
+
+    // prettier-ignore
+    console.info(
+      '███╗   ███╗███╗   ███╗ ██████╗ ██╗███████╗' + ' Multi-Mission\n' +
+      '████╗ ████║████╗ ████║██╔════╝ ██║██╔════╝' + ' Geographical\n' +
+      '██╔████╔██║██╔████╔██║██║  ███╗██║███████╗' + ' Information\n' +
+      '██║╚██╔╝██║██║╚██╔╝██║██║   ██║██║╚════██║' + ' System\n' +
+      '██║ ╚═╝ ██║██║ ╚═╝ ██║╚██████╔╝██║███████║' + ` v${mmgisglobal.version} (${mmgisglobal.NODE_ENV})\n` +
+      '╚═╝     ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═╝╚══════╝' + ' https://github.com/NASA-AMMOS/MMGIS');
+  </script>
+</body>
+<div id="main-container"></div>
+<footer></footer>
+
+<script src="bundle.js"></script>
+<style>
+  #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</html>

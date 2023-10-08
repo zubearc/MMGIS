@@ -1,0 +1,1 @@
+async function main(){const n=await fetch("components/main.html").then((n=>n.text()));document.createElement("div").innerHTML=n,document.body.innerHTML+=n,document.querySelector(".LoadingPage").style.display="none"}main(),console.log("hello world!");
