@@ -29,52 +29,9 @@
     </div>
   </div>
   <script>
-    // const NODE_ENV = "%NODE_ENV%";
-    // mmgisglobal = {};
-    // mmgisglobal.name = "MMGIS";
-    // mmgisglobal.SERVER = "node";
-    // switch (NODE_ENV) {
-    //   case "production":
-    //     mmgisglobal.AUTH = "#{AUTH}";
-    //     mmgisglobal.version = "#{VERSION}";
-    //     mmgisglobal.user = "#{user}";
-    //     mmgisglobal.permission = "#{permission}";
-    //     mmgisglobal.groups = "#{groups}";
-    //     mmgisglobal.NODE_ENV = "#{NODE_ENV}";
-    //     mmgisglobal.FORCE_CONFIG_PATH = "#{FORCE_CONFIG_PATH}";
-    //     mmgisglobal.CLEARANCE_NUMBER = "#{CLEARANCE_NUMBER}";
-    //     mmgisglobal.HOSTS = "#{HOSTS}";
-    //     mmgisglobal.PORT = "#{PORT}";
-    //     mmgisglobal.ROOT_PATH = "#{ROOT_PATH}";
-    //     mmgisglobal.WEBSOCKET_ROOT_PATH = "#{WEBSOCKET_ROOT_PATH}";
-    //     mmgisglobal.ENABLE_MMGIS_WEBSOCKETS = "#{ENABLE_MMGIS_WEBSOCKETS}";
-    //     mmgisglobal.MAIN_MISSION = "#{MAIN_MISSION}";
-    //     mmgisglobal.SKIP_CLIENT_INITIAL_LOGIN = "#{SKIP_CLIENT_INITIAL_LOGIN}";
-    //     mmgisglobal.THIRD_PARTY_COOKIES = "#{THIRD_PARTY_COOKIES}";
-    //     break;
-    //   default:
-    //     mmgisglobal.AUTH = "%AUTH%";
-    //     mmgisglobal.version = "%VERSION%";
-    //     mmgisglobal.user = "guest";
-    //     mmgisglobal.permission = "000";
-    //     mmgisglobal.groups = [];
-    //     mmgisglobal.NODE_ENV = NODE_ENV;
-    //     mmgisglobal.FORCE_CONFIG_PATH = null;
-    //     mmgisglobal.CLEARANCE_NUMBER = "%CLEARANCE_NUMBER%";
-    //     mmgisglobal.PORT = "%PORT%";
-    //     mmgisglobal.ROOT_PATH = "%ROOT_PATH%";
-    //     mmgisglobal.WEBSOCKET_ROOT_PATH = "%WEBSOCKET_ROOT_PATH%";
-    //     mmgisglobal.ENABLE_MMGIS_WEBSOCKETS = "%ENABLE_MMGIS_WEBSOCKETS%";
-    //     mmgisglobal.MAIN_MISSION = "%MAIN_MISSION%";
-    //     mmgisglobal.SKIP_CLIENT_INITIAL_LOGIN = "%SKIP_CLIENT_INITIAL_LOGIN%";
-    //     mmgisglobal.THIRD_PARTY_COOKIES = "%THIRD_PARTY_COOKIES%";
-    //     // eslint-disable-next-line
-    //     mmgisglobal.HOSTS = %HOSTS%;
-    //     break;
-    // }
-    window.mmgisglobal = {
+    globalThis.mmgisglobal = {
       version: '3.0.0',
-    };
+    }
 
     // prettier-ignore
     console.info(
@@ -90,5 +47,13 @@
 <footer></footer>
 
 <script src="bundle.js"></script>
-
+<style>
+  #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
 </html>

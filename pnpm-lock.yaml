@@ -110,6 +110,9 @@ dependencies:
   jquery:
     specifier: ^3.5.1
     version: 3.7.1
+  leaflet:
+    specifier: ^1.9.4
+    version: 1.9.4
   lithosphere:
     specifier: ^1.5.4
     version: 1.5.4(three@0.157.0)
@@ -9869,6 +9872,10 @@ packages:
       picocolors: 1.0.0
       shell-quote: 1.8.1
     dev: true
+
+  /leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
+    dev: false
 
   /leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
