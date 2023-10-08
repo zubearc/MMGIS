@@ -7,7 +7,7 @@ const express = require('express')
 const chalk = require('chalk')
 const cp = require('child_process')
 const swaggerUi = require('swagger-ui-express')
-const swaggerDocumentMain = require('../documentation/pages/swaggers/swaggerMain.json')
+const swaggerDocumentMain = require('../public/documentation/pages/swaggers/swaggerMain.json')
 const setups = require('../API/setups')
 const { sequelize } = require('../API/connection')
 const testEnv = require('../API/testEnv')
@@ -496,7 +496,7 @@ setups.getBackendSetups(function (setups) {
   )
   app.use(
     `${ROOT_PATH}/documentation`,
-    express.static(path.join(rootDir, '/documentation'))
+    express.static(path.join(rootDir, '/public/documentation'))
   )
   app.use(
     `${ROOT_PATH}/docs/helps`,
