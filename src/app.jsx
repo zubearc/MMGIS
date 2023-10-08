@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-closing-bracket-location, react/jsx-indent-props, react/jsx-closing-tag-location */
 /* @jsx h */
 import { Fragment, h, render } from 'preact'
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-function TopBar() {
+function TopBar () {
   return (
     <div id='topBar' style='margin-left: 380px; width: calc(100% - 380px); padding-left: 0px;'>
       <div id='topBarLeft' class='hideScrollbar'>
@@ -83,7 +83,11 @@ function TopBar() {
   )
 }
 
-function BottomBar() {
+function BottomBar ({ showSettingsModal, showKeysModal }) {
+  function requestFullScreen () {
+    const elem = document.getElementById('main-container')
+    elem.requestFullscreen()
+  }
   return (
     <div id='barBottom' style='position: absolute; width: 40px; bottom: 0px; left: 0px; display: flex; flex-flow: column; z-index: 1005;'>
       <i id='topBarLink' tabindex='100' class='mmgisHoverBlue mdi mdi-open-in-new mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: inherit;' />
@@ -92,20 +96,182 @@ function BottomBar() {
           id='topBarScreenshotLoading' title='Taking Screenshot...
 You may need to permit multiple downloads in your browser.' tabindex='102' style='display: none; border-radius: 50%; border-width: 8px; border-style: solid; border-color: rgb(255, 225, 0) transparent; border-image: initial; position: relative; top: 3px; left: -17px; width: 20px; height: 20px; line-height: 26px; color: rgb(210, 184, 0); cursor: pointer; animation-name: rotate-forever; animation-duration: 2s; animation-iteration-count: infinite;' />
       </i>
-      <i id='topBarFullscreen' tabindex='103' class='mmgisHoverBlue mdi mdi-fullscreen mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: inherit;' />
-      <i id='bottomBarHotkeys' tabindex='104' class='mmgisHoverBlue mdi mdi-keyboard mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer;' />
-      <i id='bottomBarSettings' tabindex='104' class='mmgisHoverBlue mdi mdi-settings mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: inherit;' />
+      <i id='topBarFullscreen' tabindex='103' onClick={requestFullScreen} class='mmgisHoverBlue mdi mdi-fullscreen mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: inherit;' />
+      <i id='bottomBarHotkeys' tabindex='104' onClick={showKeysModal} class='mmgisHoverBlue mdi mdi-keyboard mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer;' />
+      <i id='bottomBarSettings' tabindex='104' onClick={showSettingsModal} class='mmgisHoverBlue mdi mdi-settings mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: inherit;' />
       <i id='topBarInfo' title='Info' tabindex='105' class='mmgisHoverBlue mdi mdi-information-outline mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: none;' />
       <i id='topBarHelp' title='Help' tabindex='106' class='mmgisHoverBlue mdi mdi-help mdi-18px' style='padding: 5px 10px; width: 40px; height: 36px; line-height: 26px; cursor: pointer; display: none;' />
     </div>
   )
 }
 
-function ToolPanelLayer({ name }) {
+// When this element is clicked on and dragged, send drag information to the `fn` function
+function createDragHandler (element, fn, release) {
+  element.addEventListener('mousedown', function (e) {
+    console.log('mousedown')
+    e.preventDefault()
+    e.stopPropagation()
+    const startX = e.clientX
+    const startY = e.clientY
+    const startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10)
+    const startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10)
+    const mouseMoveHandler = function (e) {
+      const dx = e.clientX - startX
+      const dy = e.clientY - startY
+      fn(startWidth + dx, startHeight + dy)
+    }
+    const mouseUpHandler = function () {
+      document.removeEventListener('mousemove', mouseMoveHandler)
+      document.removeEventListener('mouseup', mouseUpHandler)
+      if (release) release()
+    }
+    document.addEventListener('mousemove', mouseMoveHandler)
+    document.addEventListener('mouseup', mouseUpHandler)
+  })
+}
+
+function createDraggable (element, parent, leftPadding = 0) {
+  console.log(element)
+  let timer, lastX, lastY // eslint-disable-line no-unused-vars
+  // Move the tool panel based on the drag
+  const initialWidth = parseInt(parent.style.width.replace('px', ''))
+  let currentWidth = initialWidth
+  function startUpdating () {
+    timer = setInterval(() => {
+      parent.style.width = `${Math.max(initialWidth, currentWidth + lastX)}px`
+      // if (dontMoveEle) return
+      element.style.left = `${currentWidth + leftPadding + lastX}px`
+    }, 20)
+  }
+  function handleUpdate (x, y) {
+    // make sure we don't wind X before the initial width
+    if ((currentWidth + x) < initialWidth) {
+      console.log(initialWidth, 'warning: x < 0', x, y)
+      x = 0
+    }
+    // console.log(x, y)
+    lastX = x
+    lastY = y
+    if (!timer) startUpdating()
+  }
+  function handleRelease () {
+    clearInterval(timer)
+    timer = null
+    currentWidth = initialWidth + lastX
+  }
+  createDragHandler(element, handleUpdate, handleRelease)
+}
+
+function LayerTool () {
+  useEffect(() => {
+    let dragSrcEl = null
+    function handleDragStart (e) {
+      this.style.opacity = '0.4'
+
+      dragSrcEl = this
+
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('text/html', this.innerHTML)
+    }
+
+    function handleDragEnd (e) {
+      this.style.opacity = '1'
+
+      items.forEach(function (item) {
+        item.classList.remove('over')
+      })
+    }
+
+    function handleDragOver (e) {
+      e.preventDefault()
+      return false
+    }
+
+    function handleDragEnter (e) {
+      this.classList.add('over')
+    }
+
+    function handleDragLeave (e) {
+      this.classList.remove('over')
+    }
+
+    function handleDrop (e) {
+      e.stopPropagation()
+      if (dragSrcEl !== this) {
+        dragSrcEl.innerHTML = this.innerHTML
+        this.innerHTML = e.dataTransfer.getData('text/html')
+      }
+      return false
+    }
+
+    function registerDraggableElements (items) {
+      items.forEach(function (item) {
+        item.addEventListener('dragstart', handleDragStart)
+        item.addEventListener('dragover', handleDragOver)
+        item.addEventListener('dragenter', handleDragEnter)
+        item.addEventListener('dragleave', handleDragLeave)
+        item.addEventListener('dragend', handleDragEnd)
+        item.addEventListener('drop', handleDrop)
+      })
+    }
+    const items = document.querySelectorAll('.panel-layers')
+    registerDraggableElements(items)
+  }, [])
+
+  return (
+    <div id='layersTool'>
+      <div id='layersToolHeader'>
+        <div id='filterLayers'>
+          <div class='left'>
+            <div id='title'>Layers</div>
+            <div id='helpModal_LayersTool' class='mmgisButton5 mmgisHelpButton' title='Help'>
+              <i class='mdi mdi-help-rhombus-outline mdi-18px' />
+            </div>
+          </div>
+          <div class='right'>
+            <div class='vector' type='vector' title='Hide/Show Vector Layers'>
+              <i class='mdi mdi-vector-square mdi-18px' />
+            </div>
+            <div class='vectortile' type='vectortile' title='Hide/Show VectorTile Layers'>
+              <i class='mdi mdi-grid mdi-18px' />
+            </div>
+            <div class='tile' type='tile' title='Hide/Show Raster Layers'><i class='mdi mdi-map-outline mdi-18px' /></div>
+            <div class='query' type='query' title='Hide/Show Query Layers'><i class='mdi mdi-binoculars mdi-18px' /></div>
+            <div class='data' type='data' title='Hide/Show Data Layers'><i class='mdi mdi-file-table mdi-18px' /></div>
+            <div class='model' type='model' title='Hide/Show Model Layers'><i class='mdi mdi-cube-outline mdi-18px' /></div>
+            <div class='visible' type='visible' title='Hide/Show Off Layers'><i class='mdi mdi-eye mdi-18px' /></div>
+          </div>
+        </div>
+        <div id='searchLayers'>
+          <i class='mdi mdi-magnify mdi-18px' />
+          <input type='text' placeholder='Search Layers (# for tags)' autocomplete='off' />
+          <div id='clear'><i class='mdi mdi-close mdi-18px' /></div>
+          <div id='expand'><i class='mdi mdi-arrow-expand-vertical mdi-18px' /></div>
+          <div id='collapse'><i class='mdi mdi-arrow-collapse-vertical mdi-18px' /></div>
+        </div>
+      </div>
+      <div id='layersToolContent'>
+        <ul id='layersToolList'>
+          <ToolPanelLayer name='A Header' />
+          <ToolPanelLayer name='S1 Drawings' />
+          <ToolPanelLayer name='S2 Drawings' />
+          <ToolPanelLayer name='ChemCam' />
+          <ToolPanelLayer name='Waypoints' />
+          <ToolPanelLayer name='Polygon' />
+          <ToolPanelLayer name='Line' />
+          <ToolPanelLayer name='Tile with DEM' />
+          <ToolPanelLayer name='Maps' />
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function ToolPanelLayer ({ name }) {
   const id = '34de02bf-cece-4e2d-b29a-48dadb5c4408'
   const parentId = 'f6561467-5b7c-407e-b008-ac667704a1c3'
   return (
-    <li id={'LayersTooluuid' + id} type='vector' depth='1' name={id} parent={parentId} style='margin-bottom: 1px; overflow: hidden; height: auto; margin-top: 1px;'>
+    <li id={'LayersTooluuid' + id} class='panel-layers' draggable type='vector' depth='1' name={id} parent={parentId} style='margin-bottom: 1px; overflow: hidden; height: auto; margin-top: 1px;'>
       <div class='title' id={'layerstartuuid' + id} style='border-left: 13px solid var(--color-a);'>
         <div class='layersToolColor vector'>
           <i class='mdi mdi-drag-vertical mdi-12px' />
@@ -157,122 +323,80 @@ function ToolPanelLayer({ name }) {
   )
 }
 
-// When this element is clicked on and dragged, send drag information to the `fn` function
-function createDragHandler(element, fn, release) {
-  element.addEventListener('mousedown', function (e) {
-    console.log('mousedown')
-    e.preventDefault()
-    e.stopPropagation()
-    const startX = e.clientX
-    const startY = e.clientY
-    const startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10)
-    const startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10)
-    const mouseMoveHandler = function (e) {
-      const dx = e.clientX - startX
-      const dy = e.clientY - startY
-      fn(startWidth + dx, startHeight + dy)
-    }
-    const mouseUpHandler = function () {
-      document.removeEventListener('mousemove', mouseMoveHandler)
-      document.removeEventListener('mouseup', mouseUpHandler)
-      if (release) release()
-    }
-    document.addEventListener('mousemove', mouseMoveHandler)
-    document.addEventListener('mouseup', mouseUpHandler)
-  })
+function InfoTool () {
+  return (
+    <div id='infoTool'>
+      <div id='infoToolHeader'>
+        <div class='left'>
+          <div id='infoToolTitle'>Info</div>
+          <div id='helpModal_InfoTool' class='mmgisButton5 mmgisHelpButton' title='Help'><i class='mdi mdi-help-rhombus-outline mdi-18px' /></div>
+          <div id='infoToolEquiv' title='Number of overlapping features' />
+        </div>
+        <div class='right' style='display: none;'>
+          <div id='infoToolUnhideAll' title='Reshow All Hidden Features' style='display: none;'>
+            <i class='mdi mdi-eye-check mdi-18px' />
+          </div>
+          <div id='infoToolHide' title='Hide/Show Feature'>
+            <i class='mdi mdi-eye mdi-18px' />
+          </div>
+          <div id='infoToolDownload' title='Copy Feature to Clipboard'>
+            <i class='mdi mdi-clipboard-outline mdi-18px' />
+          </div>
+          <div id='infoToolLocate' title='Locate on Map'>
+            <i class='mdi mdi-crosshairs-gps mdi-18px' />
+          </div>
+        </div>
+      </div>
+      <div id='infoToolSelected' style='display: none;'>
+        <div id='infoToolSelectedDropdown' />
+      </div>
+      <div id='infoToolFilter' style='display: none;'>
+        <input type='text' placeholder='Filter' />
+        <i class='mdi mdi-filter-variant mdi-18px' />
+        <div id='infoToolShowHidden' title='Toggle Hidden Properties'>
+          <i class='mdi mdi-book-outline mdi-18px' />
+        </div>
+      </div>
+      <div id='infoToolContent'>
+        <ul id='infoToolData' />
+        <div id='infoToolNoneSelected' style='display: block;'>No feature selected</div>
+      </div>
+    </div>
+  )
 }
 
-function createDraggable(element, parent) {
-  console.log(element)
-  let timer, lastX, lastY // eslint-disable-line no-unused-vars
-  // Move the tool panel based on the drag
-  const initialWidth = parseInt(parent.style.width.replace('px', ''))
-  let currentWidth = initialWidth
-  function startUpdating() {
-    timer = setInterval(() => {
-      parent.style.width = `${currentWidth + lastX}px`
-      element.style.left = `${currentWidth + 10 + lastX}px`
-    }, 100)
-  }
-  function handleUpdate(x, y) {
-    // make sure we don't wind X before the initial width
-    if ((initialWidth + x) < initialWidth) {
-      x = 0
-      // console.log('warning: x < 0')
-    }
-    // console.log(x, y)
-    lastX = x
-    lastY = y
-    if (!timer) startUpdating()
-  }
-  function handleRelease() {
-    clearInterval(timer)
-    timer = null
-    currentWidth = initialWidth + lastX
-  }
-  createDragHandler(element, handleUpdate, handleRelease)
+function SitesTool () {
+  return (
+    <Fragment>
+      <div style='height: 40px; line-height: 40px; font-size: 16px; color: var(--color-l); background: var(--color-a); font-family: lato-light; text-transform: uppercase; padding-left: 6px;'>Sites</div>
+      <div id='SitesTool' class='mmgisScrollbar' style='color: rgb(207, 207, 207); height: 100%; overflow-y: auto;'>
+        <div class='mmgisRadioBar2 sitesRadio'>
+          <div id='S1_tool_site' class='active'>Site1</div>
+          <div id='S2_tool_site'>Site2</div>
+        </div>
+      </div>
+    </Fragment>
+  )
 }
 
-function ToolPanel() {
+function ToolPanel ({ shownTool }) {
   useEffect(() => {
     const element = document.getElementById('toolPanelDrag')
     const parent = document.getElementById('toolPanel')
-    createDraggable(element, parent)
+    createDraggable(element, parent, 10)
 
     const ele2 = document.getElementById('mapSplit')
     const par2 = document.getElementById('viewerScreen')
-    createDraggable(ele2, par2)
+    createDraggable(ele2, par2, -8.5)
   })
 
   return (
     <Fragment>
       <div id='toolPanel' style='position: absolute; width: 340px; top: 0px; height: 100%; left: 40px; background: var(--color-k); transition: width 0.2s ease-out 0s; overflow: hidden; z-index: 1400;'>
         <div style='height: 100%;'>
-          <div id='layersTool'>
-            <div id='layersToolHeader'>
-              <div id='filterLayers'>
-                <div class='left'>
-                  <div id='title'>Layers</div>
-                  <div id='helpModal_LayersTool' class='mmgisButton5 mmgisHelpButton' title='Help'>
-                    <i class='mdi mdi-help-rhombus-outline mdi-18px' />
-                  </div>
-                </div>
-                <div class='right'>
-                  <div class='vector' type='vector' title='Hide/Show Vector Layers'>
-                    <i class='mdi mdi-vector-square mdi-18px' />
-                  </div>
-                  <div class='vectortile' type='vectortile' title='Hide/Show VectorTile Layers'>
-                    <i class='mdi mdi-grid mdi-18px' />
-                  </div>
-                  <div class='tile' type='tile' title='Hide/Show Raster Layers'><i class='mdi mdi-map-outline mdi-18px' /></div>
-                  <div class='query' type='query' title='Hide/Show Query Layers'><i class='mdi mdi-binoculars mdi-18px' /></div>
-                  <div class='data' type='data' title='Hide/Show Data Layers'><i class='mdi mdi-file-table mdi-18px' /></div>
-                  <div class='model' type='model' title='Hide/Show Model Layers'><i class='mdi mdi-cube-outline mdi-18px' /></div>
-                  <div class='visible' type='visible' title='Hide/Show Off Layers'><i class='mdi mdi-eye mdi-18px' /></div>
-                </div>
-              </div>
-              <div id='searchLayers'>
-                <i class='mdi mdi-magnify mdi-18px' />
-                <input type='text' placeholder='Search Layers (# for tags)' autocomplete='off' />
-                <div id='clear'><i class='mdi mdi-close mdi-18px' /></div>
-                <div id='expand'><i class='mdi mdi-arrow-expand-vertical mdi-18px' /></div>
-                <div id='collapse'><i class='mdi mdi-arrow-collapse-vertical mdi-18px' /></div>
-              </div>
-            </div>
-            <div id='layersToolContent'>
-              <ul id='layersToolList'>
-                <ToolPanelLayer name='A Header' />
-                <ToolPanelLayer name='S1 Drawings' />
-                <ToolPanelLayer name='S2 Drawings' />
-                <ToolPanelLayer name='ChemCam' />
-                <ToolPanelLayer name='Waypoints' />
-                <ToolPanelLayer name='Polygon' />
-                <ToolPanelLayer name='Line' />
-                <ToolPanelLayer name='Tile with DEM' />
-                <ToolPanelLayer name='Maps' />
-              </ul>
-            </div>
-          </div>
+          {shownTool === 'layer' ? <LayerTool /> : null}
+          {shownTool === 'info' ? <InfoTool /> : null}
+          {shownTool === 'sites' ? <SitesTool /> : null}
         </div>
       </div>
       {/* TODO: Figure out what this does */}
@@ -283,7 +407,7 @@ function ToolPanel() {
   )
 }
 
-function ToolBar() {
+function ToolBar ({ shownTool, setShownTool }) {
   return (
     <div
       id='toolbar'
@@ -295,64 +419,95 @@ function ToolBar() {
           style='transition: all 0.25s ease-in 0s; pointer-events: auto; opacity: 1; padding-bottom: 8px;'
         >
           <div
-            id='toolButtonLayers' class='toolButton' tabindex='1'
-            style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: 1px solid var(--color-a-5); border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f); background: var(--color-i);'
+            id='toolButtonLayers' tabindex='1'
+            onClick={() => setShownTool('layer')}
+            class={'toolButton ' + (shownTool === 'layer' ? 'active' : '')}
           >
-            <i
-              id='LayersTool' class='mdi mdi-buffer mdi-18px active'
-              style='cursor: pointer; color: var(--color-mmgis);'
-            />
+            <i id='LayersTool' class='mdi mdi-buffer mdi-18px active' style='cursor: pointer; color: var(--color-mmgis);' />
           </div>
           <div
-            id='toolButtonInfo' class='toolButton' tabindex='3'
-            style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: none; border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f);'
+            id='toolButtonInfo' tabindex='3'
+            onClick={() => setShownTool('info')}
+            class={'toolButton ' + (shownTool === 'info' ? 'active' : '')}
           >
             <i id='InfoTool' class='mdi mdi-information-variant mdi-18px' style='cursor: pointer;' />
           </div>
           <div
-            id='toolButtonSites' class='toolButton' tabindex='4'
-            style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: none; border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f);'
+            id='toolButtonSites' tabindex='4'
+            onClick={() => setShownTool('sites')}
+            class={'toolButton ' + (shownTool === 'sites' ? 'active' : '')}
           >
             <i id='SitesTool' class='mdi mdi-pin mdi-18px' style='cursor: pointer;' />
           </div>
-          <div
+          {/* <div
             id='toolButtonChemistry' class='toolButton' tabindex='5'
+            onClick={() => setShownTool('chemistry')}
             style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: none; border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f);'
           >
             <i id='ChemistryTool' class='mdi mdi-flask mdi-18px' style='cursor: pointer;' />
-          </div>
-          <div
-            id='toolButtonIdentifier' class='toolButton' tabindex='6'
-            style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: none; border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f);'
+          </div> */}
+          {/* <div
+            id='toolButtonIdentifier' tabindex='6'
+            onClick={() => setShownTool('identifier')}
+            class={'toolButton ' + (shownTool === 'identifier' ? 'active' : '')}
           >
             <i id='IdentifierTool' class='mdi mdi-map-marker mdi-18px' style='cursor: pointer;' />
-          </div>
-          <div
-            id='toolButtonMeasure' class='toolButton' tabindex='7'
-            style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: none; border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f);'
+          </div> */}
+          {/* <div
+            id='toolButtonMeasure' tabindex='7'
+            onClick={() => setShownTool('measure')}
+            class={'toolButton ' + (shownTool === 'measure' ? 'active' : '')}
           >
             <i id='MeasureTool' class='mdi mdi-chart-areaspline mdi-18px' style='cursor: pointer;' />
           </div>
           <div
-            id='toolButtonDraw' class='toolButton' tabindex='8'
-            style='width: 100%; height: 36px; display: inline-block; text-align: center; line-height: 36px; border-top: none; border-bottom: 1px solid var(--color-a-5); vertical-align: middle; cursor: pointer; transition: all 0.2s ease-in 0s; color: var(--color-f);'
+            id='toolButtonDraw' tabindex='8'
+            onClick={() => setShownTool('draw')}
+            class={'toolButton ' + (shownTool === 'draw' ? 'active' : '')}
           >
             <i id='DrawTool' class='mdi mdi-lead-pencil mdi-18px' style='cursor: pointer;' />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
   )
 }
 
-function SplitScreens() {
+function ToolContainer () {
+  const [shownTool, setShownTool] = useState('layer')
+
+  return (
+    <Fragment>
+      <ToolPanel shownTool={shownTool} />
+      <ToolBar shownTool={shownTool} setShownTool={setShownTool} />
+    </Fragment>
+  )
+}
+
+function SplitScreens () {
   useEffect(() => {
     // Initialize a Map on #map ID with OSM basemap
     const map = L.map('map').setView([51.505, -0.09], 13)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map)
-  })
+
+    const ele = document.getElementById('mapSplitInnerLeft')
+    ele.onclick = function () {
+      const ele2 = document.getElementById('mapSplit')
+      const par2 = document.getElementById('viewerScreen')
+      ele2.style.left = '-8.5px'
+      par2.style.width = '0px'
+    }
+
+    const ele3 = document.getElementById('mapSplitInnerRight')
+    ele3.onclick = function () {
+      const ele4 = document.getElementById('mapSplit')
+      const par4 = document.getElementById('viewerScreen')
+      ele4.style.left = '391.5px'
+      par4.style.width = '400px'
+    }
+  }, [])
 
   return (
     <div id='splitscreens' style='position: absolute; top: 0px; width: calc(100% - 380px); height: 100%; left: 380px;'>
@@ -584,8 +739,8 @@ function SplitScreens() {
             </div>
           </div>
         </div>
-        <div class='splitterV' id='viewerSplit' style='width: 0px; height: 485.6px; left: 0px; cursor: default;' />
-        <div id='mapScreen' style='position: absolute; width: 1156px; height: 100%; top: 0px; left: 0px;'>
+        <div class='splitterV' id='viewerSplit' style='width: 0px; height: 100%; left: 0px; cursor: default;' />
+        <div id='mapScreen' style='position: absolute; width: 100%; height: 100%; top: 0px; left: 0px;'>
           <div id='map'>((MAP HERE))</div>
           <div
             id='mapToolBar'
@@ -680,7 +835,7 @@ function SplitScreens() {
             </div>
           </div>
         </div>
-        <div class='splitterV' id='mapSplit' style='width: 17px; height: 485.6px; left: -8.5px;'>
+        <div class='splitterV' id='mapSplit' style='width: 17px; height: 100%; left: -8.5px; z-index:3000;'>
           <div class='splitterVInner' id='mapSplitInner' style='width: 34px;'>
             <div
               style='background: var(--color-a); width: 30px; height: 30px; position: absolute; left: -19px; z-index: -1;'
@@ -697,8 +852,8 @@ function SplitScreens() {
             <div id='mapSplitInnerViewerInfo'>Viewer</div>
           </div>
         </div>
-        <div id='globeScreen'>(GLOBE SCREEN)</div>
-        <div class='splitterV' id='globeSplit' style='width: 17px; height: 485.6px; left: 1147.5px;'>
+        {/* <div id='globeScreen'>(GLOBE SCREEN)</div> */}
+        {/* <div class='splitterV' id='globeSplit' style='width: 17px; height: 485.6px; left: 1147.5px;'>
           <div class='splitterVInner' id='globeSplitInner' style='width: 34px;'>
             <div
               style='background: var(--color-a); width: 30px; height: 30px; position: absolute; left: -18px; z-index: -1;'
@@ -714,14 +869,16 @@ function SplitScreens() {
             />
             <div id='mapSplitInnerGlobeInfo'>Globe</div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div id='tScreen'>
         <div
           id='toolsWrapper'
           style='height: 0px; width: 340px; margin: 0px; background: var(--color-a); left: 0px; bottom: 0px; z-index: 1003;'
         >
-          <div id='tools' style='position: absolute; top: 0px; height: 100%; padding-bottom: 0px; width: 100%;' />
+          <div id='tools' style='position: absolute; top: 0px; height: 100%; padding-bottom: 0px; width: 100%;'>
+            {/* TODO: Chemistry */}
+          </div>
           <div class='splitterH' id='toolsSplit' style='height: 0px; left: 0px; bottom: 0px; z-index: 3;' />
         </div>
       </div>
@@ -743,20 +900,165 @@ function SplitScreens() {
   )
 }
 
-function Main() {
+function SettingsModal ({ dismissModal }) {
+  return (
+    <div id='mmgisModal_0' class='mmgisModal dontCloseWhenClicked' style='opacity: 1;'>
+      <div id='mmgisModalClose'><i class='mdi mdi-close mdi-24px' /></div>
+      <div id='mmgisModalInner'>
+        <div id='mainSettingsModal'>
+          <div id='mainSettingsModalTitle'>
+            <div><i class='mdi mdi-settings mdi-18px' /><div>Settings</div></div>
+            <div id='mainSettingsModalClose' onClick={dismissModal}><i class='mmgisHoverBlue mdi mdi-close mdi-18px' /></div>
+          </div>
+          <div id='mainSettingsModalContent'>
+            <div class='mainSettingsModalSection' id='mainSettingsModalSectionUIVisibility'>
+              <div class='mainSettingsModalSectionTitle'>User Interface Visibility</div>
+              <ul class='mainSettingsModalSectionOptions'>
+                <li>
+                  <div class='mmgis-checkbox'><input type='checkbox' checked='' id='checkbox_msmsUIV1' value='topbar' /><label for='checkbox_msmsUIV1' /></div>
+                  <div>Top Bar</div>
+                </li>
+                <li>
+                  <div class='mmgis-checkbox'><input type='checkbox' checked='' id='checkbox_msmsUIV2' value='toolbars' /><label for='checkbox_msmsUIV2' /></div>
+                  <div>Toolbars</div>
+                </li>
+                <li>
+                  <div class='mmgis-checkbox'><input type='checkbox' checked='' id='checkbox_msmsUIV3' value='scalebar' /><label for='checkbox_msmsUIV3' /></div>
+                  <div>Scale Bar</div>
+                </li>
+                <li>
+                  <div class='mmgis-checkbox'><input type='checkbox' checked='' id='checkbox_msmsUIV4' value='coordinates' /><label for='checkbox_msmsUIV4' /></div>
+                  <div>Coordinates</div>
+                </li>
+                <li>
+                  <div class='mmgis-checkbox'><input type='checkbox' id='checkbox_msmsUIV5' value='graticule' /><label for='checkbox_msmsUIV5' /></div>
+                  <div>Graticule</div>
+                </li>
+                <li>
+                  <div class='mmgis-checkbox'><input type='checkbox' checked='' id='checkbox_msmsUIV6' value='miscellaneous' /><label for='checkbox_msmsUIV6' /></div>
+                  <div>Miscellaneous</div>
+                </li>
+              </ul>
+            </div>
+            <div class='mainSettingsModalSection' id='mainSettingsModalSection3DGlobe'><div class='mainSettingsModalSectionTitle'>3D Globe</div><ul class='mainSettingsModalSectionOptions'><li class='flexbetween'><div>Radius of Tiles<i
+              title='Number of tiles to query out from the center in the Globe view.
+  The higher the number, the more data queried in the distance (which may hurt performance).
+  ' class='infoIcon mdi mdi-information mdi-12px' /></div><div class='flexbetween'><div id='globeRadiusOfTilesValue' style='padding: 0px 6px;'>5</div><input id='globeSetRadiusOfTiles' class='slider2' type='range' min='4' max='11' step='1' value='5' /></div></li></ul></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function KeysModal ({ dismissModal }) {
+  return (
+    <div id='mmgisModal_0' class='mmgisModal dontCloseWhenClicked' style='opacity: 1;'>
+      <div id='mmgisModalClose'><i class='mdi mdi-close mdi-24px' /></div>
+      <div id='mmgisModalInner'>
+        <div id='mainHotkeysModal'>
+          <div id='mainHotkeysModalTitle'>
+            <div><i class='mdi mdi-keyboard mdi-18px' /><div>Hotkeys</div></div>
+            <div id='mainHotkeysModalClose' onClick={dismissModal}><i class='mmgisHoverBlue mdi mdi-close mdi-18px' /></div>
+          </div>
+          <div id='mainHotkeysModalContent'>
+
+            <div class='mainHotkeysModalSection'>
+              <div class='mainHotkeysModalSectionTitle'>Draw</div>
+              <ul class='mainHotkeysModalSectionOptions'>
+                <li class='mainHotkeysModalSectionSubtitle'>Toggle</li>
+                <li>
+                  <div>Last File</div>
+                  <div>ALT + 1</div>
+                </li>
+                <li class='mainHotkeysModalSectionSubtitle'>Shapes Tab</li>
+                <li>
+                  <div>Next Feature</div>
+                  <div>Arrow-Right</div>
+                </li>
+                <li>
+                  <div>Previous Feature</div>
+                  <div>Arrow-Left</div>
+                </li>
+                <li>
+                  <div>Add to Group</div>
+                  <div>CTRL + Click</div>
+                </li>
+                <li>
+                  <div>Group Range Select</div>
+                  <div>SHIFT + Click</div>
+                </li>
+              </ul>
+            </div>
+            <div class='mainHotkeysModalSection'>
+              <div class='mainHotkeysModalSectionTitle'>Map</div>
+              <ul class='mainHotkeysModalSectionOptions'>
+                <li>
+                  <div>Zoom out</div>
+                  <div>-</div>
+                </li>
+                <li>
+                  <div>Zoom In</div>
+                  <div>+</div>
+                </li>
+                <li>
+                  <div>Zoom to Area</div>
+                  <div>SHIFT + Click-and-Drag</div>
+                </li>
+              </ul>
+            </div>
+            <div class='mainHotkeysModalSection'>
+              <div class='mainHotkeysModalSectionTitle'>3D Globe</div>
+              <ul class='mainHotkeysModalSectionOptions'>
+                <li>
+                  <div>Pan Up</div>
+                  <div>Arrow-Up</div>
+                </li>
+                <li>
+                  <div>Pan Right</div>
+                  <div>Arrow-Right</div>
+                </li>
+                <li>
+                  <div>Pan Down</div>
+                  <div>Arrow-Down</div>
+                </li>
+                <li>
+                  <div>Pan Left</div>
+                  <div>Arrow-Left</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Main () {
   console.log('Loading...')
+  const [showSettings, setShowSettings] = useState(false)
+  const [showKeys, setShowKeys] = useState(false)
+
   return (
     <div id='main-container' style='opacity: 1; filter: blur(0px);'>
       <link rel='stylesheet' href='components/main.css' />
       <link rel='stylesheet' href='components/mmgis.css' />
       <link rel='stylesheet' href='components/LayersTool.css' />
       <link rel='stylesheet' href='components/viewer.css' />
+      <link rel='stylesheet' href='components/droppy.css' />
+      <link rel='stylesheet' href='components/search.css' />
+      <link rel='stylesheet' href='components/modal.css' />
+      <link rel='stylesheet' href='components/InfoTool.css' />
+      <link rel='stylesheet' href='components/toolbar.css' />
+      <link rel='stylesheet' href='components/mmgisUI.css' />
       <link rel='stylesheet' href='css/materialdesignicons/materialdesignicons.css' />
       <TopBar />
-      <BottomBar />
-      <ToolPanel />
+      <BottomBar showKeysModal={() => setShowKeys(true)} showSettingsModal={() => setShowSettings(true)} />
+      <ToolContainer />
       <SplitScreens />
-      <ToolBar />
+      {showSettings && <SettingsModal dismissModal={() => setShowSettings(false)} />}
+      {showKeys && <KeysModal dismissModal={() => setShowKeys(false)} />}
       <div
         id='mmgislogo'
         style='display: inherit; padding: 9px 6px; cursor: pointer; width: 40px; height: 40px; position: absolute; top: 0px; left: 0px; z-index: 2005; image-rendering: pixelated;'

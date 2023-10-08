@@ -619,3 +619,10 @@
         transform: rotate(360deg);
     }
 }
+
+
+/* Drag and Drop */
+#layersTool .over {
+    border: 3px dotted #666;
+    filter: invert(1);
+}
