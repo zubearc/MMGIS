@@ -222,8 +222,10 @@ function LayerTool ({ layers }) {
   const layerElements = []
   for (const layer of layers) {
     layerElements.push(<ToolPanelLayer layerData={layer} name={layer.name} depth={0} />)
-    for (const subLayer of layer.sublayers) {
-      layerElements.push(<ToolPanelLayer layerData={layer} name={subLayer.name} depth={1} />)
+    if (layer.sublayers) {
+      for (const subLayer of layer.sublayers) {
+        layerElements.push(<ToolPanelLayer layerData={subLayer} name={subLayer.name} depth={1} />)
+      }
     }
   }
 
@@ -284,11 +286,23 @@ function ToolPanelLayer ({ name, layerData, depth = 0 }) {
   const parentId = 'f6561467-5b7c-407e-b008-ac667704a1c3'
 
   const [hasOpenSettings, setHasOpenSettings] = useState(false)
+  const [active, setActive] = useState(false)
 
-  const layerId = 'LayersTooluuid' + id
-  function setDraggable (layerId, draggable) {
-    const element = document.getElementById(layerId)
-    element.draggable = draggable
+  // TODO: fix dragging
+  // const layerId = 'LayersTooluuid' + id
+  // function setDraggable (layerId, draggable) {
+  //   const element = document.getElementById(layerId)
+  //   element.draggable = draggable
+  // }
+
+  console.log('Layer Data', layerData)
+
+  function toggleActive () {
+    const now = !active
+    setActive(now)
+    layerData.visibility = now
+    // console.log('Layer is now', layerData.uuid, now)
+    mapUpdateLayer(layerData)
   }
 
   // onMouseDown={() => { setDraggable(layerId, true) }} onMouseLeave={() => setDraggable(layerId, false)} onMouseUp={() => setDraggable(layerId, false)}
@@ -298,8 +312,8 @@ function ToolPanelLayer ({ name, layerData, depth = 0 }) {
         <div class='layersToolColor vector'>
           <i class='mdi mdi-drag-vertical mdi-12px' />
         </div>
-        <div class='checkboxcont'>
-          <div class='checkbox off' />
+        <div class='checkboxcont' onClick={toggleActive}>
+          <div class={'checkbox ' + (active ? 'on' : 'off')} />
         </div>
         <div class='layerName' title='S1 Drawings'>{name}</div>
         <div class='reload' title='Reload Layer'>
@@ -330,23 +344,23 @@ function ToolPanelLayer ({ name, layerData, depth = 0 }) {
             ? (
               <Fragment>
                 {
-                layerData.time && <div class='timeDisplay settings vector'>
-                  <ul>
-                    <li>
-                      <div>
-                        <div>Start Time</div>
-                        <label class='starttime uuidfc8cddbf-daec-434d-8d70-98ec9a093ba2'>2022-08-10T00:00:00.000Z</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div>End Time</div>
-                        <label class='endtime uuidfc8cddbf-daec-434d-8d70-98ec9a093ba2'>2023-10-30T00:00:00.000Z</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              }
+                  layerData.time && <div class='timeDisplay settings vector'>
+                    <ul>
+                      <li>
+                        <div>
+                          <div>Start Time</div>
+                          <label class='starttime uuidfc8cddbf-daec-434d-8d70-98ec9a093ba2'>2022-08-10T00:00:00.000Z</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div>
+                          <div>End Time</div>
+                          <label class='endtime uuidfc8cddbf-daec-434d-8d70-98ec9a093ba2'>2023-10-30T00:00:00.000Z</label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                }
                 <div class='settings settingsmainvector'>
                   <div class='layerSettingsTitle'>
                     <div>Layer Settings</div>
@@ -563,13 +577,72 @@ function ToolContainer ({ missionData }) {
   )
 }
 
+// function mapSetLayers (layers) {
+//   const map = globalThis.map
+//   map.eachLayer(function (layer) {
+//     map.removeLayer(layer)
+//   })
+//   for (const layer of layers) {
+//     if (layer.visibility && layer.type === 'tile') {
+//       const ll = L.tileLayer(url, {
+//         attribution: '© OpenStreetMap contributors',
+//         tms: layer.tileformat === 'tms'
+//       })
+//       ll.uuid = layer.uuid
+//       ll.addTo(map)
+//     }
+//   }
+// }
+
+function mapUpdateLayer (layer) {
+  const map = globalThis.map
+  map.eachLayer(function (_layer) {
+    if (_layer.uuid && _layer.uuid === layer.uuid) {
+      map.removeLayer(_layer)
+    }
+  })
+  if (layer.visibility && layer.type === 'tile') {
+    console.log('Adding layer', layer.uuid)
+    let url = layer.url
+    if (!url.startsWith('http')) url = globalThis.appConfig.baseURL + url
+    // TODO: fix
+    url = url.replace('{t}', '_time_') + '?time=2023-10-30T00:00:00Z&composite=true'
+    const ll = L.tileLayer(url, {
+      attribution: '© OpenStreetMap contributors',
+      tms: layer.tileformat === 'tms',
+      opacity: layer.initialOpacity
+    })
+    ll.uuid = layer.uuid
+    ll.addTo(map)
+  } else {
+    console.log('Not adding layer', layer.uuid, layer.visibility, layer.type)
+  }
+}
+
+// function mapFitBB (bb) {
+//   /* fit
+//  "boundingBox": [
+//         -180,
+//         -85.05112878,
+//         179.99654660733782,
+//         85.05112878
+//       ],
+//       */
+//   const map = globalThis.map
+//   map.fitBounds([
+//     [bb[1], bb[0]],
+//     [bb[3], bb[2]]
+//   ])
+// }
+
 function SplitScreens () {
   useEffect(() => {
     // Initialize a Map on #map ID with OSM basemap
     const map = L.map('map').setView([51.505, -0.09], 13)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map)
+    globalThis.map = map
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   attribution: '© OpenStreetMap contributors'
+    // }).addTo(map)
 
     const ele = document.getElementById('mapSplitInnerLeft')
     ele.onclick = function () {
@@ -1118,6 +1191,14 @@ function MissionPicker ({ setActiveMission }) {
   const config = globalThis.appConfig
   const [missions, setMissions] = useState([])
   useEffect(() => {
+    if (config.missions) {
+      if (config.defaultMission) {
+        setActiveMission(config.defaultMission)
+      } else {
+        setMissions(Object.keys(config.missions))
+      }
+      return
+    }
     fetch(`${config.baseURL}/api/configure/missions`, {
       referrerPolicy: 'no-referrer',
       body: null,
@@ -1152,7 +1233,7 @@ function MissionPicker ({ setActiveMission }) {
 
   return (
     <div class='landingPage' style='position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 1;'><div class='gradient' /><div class='landingBottom'><div class='imagecredit'><div>Wind at Work</div><a target='__blank' rel='noreferrer' href='https://photojournal.jpl.nasa.gov/catalog/PIA20461' title='Splash Image Credit: NASA/JPL-Caltech/Univ. of Arizona'><i class='mdi mdi-information-outline mdi-14px' /></a></div><div class='version' style='cursor: pointer;'>v2.10.0</div></div><div style='position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);' /><div id='title' style='z-index: 200;'><p class='unselectable' style='font-size: 40px; opacity: 1; cursor: default; padding: 0px 10px;'><img src='/images/logos/mmgis.png' alt='Full logo' /></p></div><div id='landingPanel' /><div id='landingMissionsWrapper'>
-      <ul style='margin: 0px; padding: 0px 20px 0px 0px; height: calc(100vh - 200px); overflow-y: auto;'>
+      <ul style='margin: 0px; padding: 0px 20px 0px 0px; height: calc(100vh - 200px); overflow-y: auto; padding-top: 28px;'>
         {
           missions.map((mission, ix) => <li key={ix} class='landingPageMission' onClick={() => setActiveMission(mission)}>{mission}</li>)
         }
@@ -1208,12 +1289,13 @@ function Mission ({ missionData }) {
 
 function Main () {
   const config = globalThis.appConfig
-  console.log('Loading...')
+  console.log('Loading...', config)
   const [activeMissionData, setActiveMissionData] = useState(null)
   const [activeMission, setActiveMission] = useState(null)
 
   async function updateActiveMission (name) {
-    const data = await fetch(`${config.baseURL}/api/configure/get?mission=${name}`, {}).then(res => res.json())
+    // Check if the config is embedded in the page, if so no need to fetch
+    const data = config.missions?.[name] ?? await fetch(`${config.baseURL}/api/configure/get?mission=${name}`, {}).then(res => res.json())
     setActiveMission(name)
     setActiveMissionData(data)
   }
@@ -1237,6 +1319,8 @@ function Main () {
     </Fragment>
   )
 }
+
+globalThis.appConfig = require('./mockNasaEmit.json')
 
 render(<Main />, document.body)
 document.querySelector('.LoadingPage').style.display = 'none'

@@ -47,7 +47,7 @@
 <footer></footer>
 
 <script>
-  globalThis.appConfig = {}
+  globalThis.appConfig ??= {}
   if (!Object.keys(globalThis.appConfig).length) {
     globalThis.appConfig = {
       "baseURL": "http://localhost:8889"
