@@ -1,8 +1,8 @@
 {
   "name": "mmgis",
-  "version": "2.10.0",
+  "version": "3.0.0",
   "description": "A web-based mapping and localization solution for science operation on planetary missions.",
-  "homepage": "build",
+  "homepage": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NASA-AMMOS/MMGIS.git"
@@ -36,13 +36,12 @@
     "cesium"
   ],
   "scripts": {
-    "start": "node scripts/init-db.js && node scripts/server.js",
-    "start:prod": "node scripts/init-db.js && cross-env NODE_ENV=production node scripts/server.js",
-    "start:prod:with_examples": "cross-env NODE_ENV=production node scripts/server.js --with_examples",
-    "start:docs": "cd ./docs && bundle exec jekyll serve",
-    "start:analyzer": "node scripts/server.js --analyze",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "start": "webpack serve --mode development --open",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "lint": "standard",
+    "fix": "standard --fix",
+    "eslint": "eslint --version"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.1",
@@ -199,9 +198,9 @@
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.0.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "3.4.2",
     "css-minimizer-webpack-plugin": "^5.0.1",
-    "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-loader": "3.0.3",
     "eslint-plugin-flowtype": "4.6.0",
@@ -220,11 +219,16 @@
     "postcss-loader": "3.0.0",
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
+    "preact": "^10.18.1",
+    "preact-compat": "^3.19.0",
     "react-dev-utils": "^12.0.1",
     "sass-loader": "8.0.2",
+    "standard": "^17.1.0",
     "string-replace-loader": "^3.1.0",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "^4.2.3",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.2.2",
     "url-loader": "^4.1.1",
     "webpack": "^5.88.2",
     "webpack-bundle-analyzer": "^4.5.0",
