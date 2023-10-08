@@ -216,6 +216,11 @@ function LayerTool ({ layers }) {
     }
     const items = document.querySelectorAll('.panel-layers')
     registerDraggableElements(items)
+
+    // Allow for a second for the layers to load
+    setTimeout(() => {
+      mapSetLayers(layers)
+    }, 200)
   }, [])
 
   console.log('Layers are', layers)
@@ -286,7 +291,7 @@ function ToolPanelLayer ({ name, layerData, depth = 0 }) {
   const parentId = 'f6561467-5b7c-407e-b008-ac667704a1c3'
 
   const [hasOpenSettings, setHasOpenSettings] = useState(false)
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(layerData.visibility)
 
   // TODO: fix dragging
   // const layerId = 'LayersTooluuid' + id
@@ -577,22 +582,11 @@ function ToolContainer ({ missionData }) {
   )
 }
 
-// function mapSetLayers (layers) {
-//   const map = globalThis.map
-//   map.eachLayer(function (layer) {
-//     map.removeLayer(layer)
-//   })
-//   for (const layer of layers) {
-//     if (layer.visibility && layer.type === 'tile') {
-//       const ll = L.tileLayer(url, {
-//         attribution: '© OpenStreetMap contributors',
-//         tms: layer.tileformat === 'tms'
-//       })
-//       ll.uuid = layer.uuid
-//       ll.addTo(map)
-//     }
-//   }
-// }
+function mapSetLayers (layers) {
+  for (const layer of layers) {
+    mapUpdateLayer(layer)
+  }
+}
 
 function mapUpdateLayer (layer) {
   const map = globalThis.map
@@ -1241,7 +1235,7 @@ function MissionPicker ({ setActiveMission }) {
         <div id='attributionsContent'>
           <div id='attributionsTitle'>
             <div>
-              <a class='attributionTitle_library' href='' target='_blank' rel='noreferrer'><img src='public/images/logos/mmgis.png' alt='Full logo' height='20px' /></a>
+              <a class='attributionTitle_library' href='' target='_blank' rel='noreferrer'><img src='images/logos/mmgis.png' alt='Full logo' height='20px' /></a>
               <div class='attributionTitle_version'>v2.10.0</div>
             </div>
             <div>

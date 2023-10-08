@@ -1,35 +1,35 @@
 @font-face {
   font-family: lato;
-  src: url(/fonts/lato/Lato-Regular.ttf);
+  src: url(../fonts/lato/Lato-Regular.ttf);
 }
 @font-face {
   font-family: lato-light;
-  src: url(/fonts/lato/Lato-Light.ttf);
+  src: url(../fonts/lato/Lato-Light.ttf);
 }
 @font-face {
   font-family: roboto;
-  src: url(/fonts/roboto/Roboto-Regular.ttf);
+  src: url(../fonts/roboto/Roboto-Regular.ttf);
 }
 
 @font-face {
   font-family: FGDCGeoSym01;
-  src: url(/fonts/fgdc/FGDCGeoSym01.ttf);
+  src: url(../fonts/fgdc/FGDCGeoSym01.ttf);
 }
 @font-face {
   font-family: FGDCGeoSym02;
-  src: url(/fonts/fgdc/FGDCGeoSym02.ttf);
+  src: url(../fonts/fgdc/FGDCGeoSym02.ttf);
 }
 @font-face {
   font-family: FGDCGeoSym03;
-  src: url(/fonts/fgdc/FGDCGeoSym03.ttf);
+  src: url(../fonts/fgdc/FGDCGeoSym03.ttf);
 }
 @font-face {
   font-family: FGDCGeoSym04;
-  src: url(/fonts/fgdc/FGDCGeoSym04.ttf);
+  src: url(../fonts/fgdc/FGDCGeoSym04.ttf);
 }
 @font-face {
   font-family: FGDCGeoSym05;
-  src: url(/fonts/fgdc/FGDCGeoSym05.ttf);
+  src: url(../fonts/fgdc/FGDCGeoSym05.ttf);
 }
 
 html {
