@@ -27,4 +27,4 @@ dist
 holding
 # package files, will depend on users' package manager
 pnpm-lock.yaml
-yard.lock
+yarn.lock

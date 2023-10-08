@@ -50,17 +50,17 @@ const getBackendSetups = (cb) => {
     }
 
     setupsPath = './API/MMGIS-Private-Backend'
-    fs.readdir(setupsPath, { withFileTypes: true }, function (err, items) {
-      if (err) {
-        logger(
-          'error',
-          'Could not read private backend setups',
-          'Setups',
-          null,
-          err
-        )
-        return
-      }
+    fs.readdir(setupsPath, { withFileTypes: true }, function (err, items) { // eslint-disable-line n/handle-callback-err
+      // if (err) {
+      //   logger(
+      //     'error',
+      //     'Could not read private backend setups',
+      //     'Setups',
+      //     null,
+      //     err
+      //   )
+      //   return
+      // }
       items = items || []
       for (let i = 0; i < items.length; i++) {
         let isDir = false
