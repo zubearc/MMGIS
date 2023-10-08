@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ '*', '!gh-pages' ]
+  pull_request:
+    branches: [ '*', '!gh-pages' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    # Yarn is faster than npm
+    - run: yarn install
+    - run: npm test
+    # For the purpose of this demo, we'll try to always deploy on each push to master
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
