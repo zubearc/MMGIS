@@ -629,12 +629,12 @@ async function mapUpdateLayer (layer, callerDataType, justUpdate) {
       }
     }
   }
-  if (layer.visibility && layer.url) {
-    let url = layer.url
+  if (layer.visibility) {
+    let url = layer.url || ''
     if (!url.startsWith('http')) url = globalThis.appConfig.baseURL + url
     // TODO: fix
     url = url.replace('{t}', '_time_') + '?time=2023-10-30T00:00:00Z&composite=true'
-    if (layer.type === 'tile') {
+    if (layer.url && layer.type === 'tile') {
       console.log('[map] Adding layer', layer.uuid)
       const ll = L.tileLayer(url, {
         attribution: '© OpenStreetMap contributors',
@@ -643,7 +643,7 @@ async function mapUpdateLayer (layer, callerDataType, justUpdate) {
       })
       ll.uuid = layer.uuid
       ll.addTo(map)
-    } else if (layer.type === 'vector') {
+    } else if (layer.url && layer.type === 'vector') {
       // add geoJSON from the URL to Leafet map
       console.log('[map] Adding layer', layer.uuid)
       const response = await fetch(url).then(res => res.json())
@@ -655,6 +655,25 @@ async function mapUpdateLayer (layer, callerDataType, justUpdate) {
           })
           circle.bindTooltip(`${callerDataType} - ${latlng}`)
           return circle
+        }
+      })
+      geoJSON.uuid = layer.uuid
+      geoJSON.addTo(map)
+    } else if (layer.type === 'FeatureCollection') {
+      // add geoJSON from the URL to Leafet map
+      console.log('[map] Adding layer', layer.uuid)
+      const json = layer.features
+      // const color = colorFromUUID(layer.uuid)
+      const geoJSON = L.geoJSON(json, {
+        onEachFeature: function (feature, layer) {
+          layer.bindTooltip('Start: ' + feature.properties.name.replace(';', ' End: '))
+          // layer.bindPopup(JSON.stringify(feature.properties))
+          // handle on click
+          const url = feature.properties.h5url
+          layer.on('click', function (e) {
+            console.log('Clicked on', url)
+            window.openIFrameModal(`https://myhdf5.hdfgroup.org/view?url=${encodeURIComponent(url)}`)
+          })
         }
       })
       geoJSON.uuid = layer.uuid
@@ -1366,8 +1385,23 @@ function Main () {
   )
 }
 
-globalThis.appConfig = require('./mockNasaEmit.json')
+globalThis.appConfig = require('./default.json')
 
 render(<Main />, document.body)
 document.querySelector('.LoadingPage').style.display = 'none'
 document.getElementById('main-container').remove()
+
+function openIFrameModal (toURL) {
+  const modalHTML = `
+<div id=iframemodal style='position: fixed; top: 10%; left: 15%; width: 70%; height: 80%; z-index: 1000; background-color:black;'>
+  <iframe src='${toURL}' style='width: 100%; height: 100%;'></iframe>
+  <button onclick="document.getElementById('iframemodal').remove()">Close</button>
+</div>
+  `
+  document.body.insertAdjacentHTML('beforeend', modalHTML)
+}
+
+console.log(openIFrameModal)
+
+// openIFrameModal('http://example.com');
+window.openIFrameModal = openIFrameModal

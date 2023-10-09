@@ -1,0 +1,2899 @@
+{
+  "baseURL": "https://earth.jpl.nasa.gov/emit-mmgis-lb/Missions/EMIT/",
+  "missions": {
+    "EMIT": {
+      "msv": {
+        "mission": "EMIT",
+        "site": "ert",
+        "masterdb": false,
+        "view": [
+          "0",
+          "0",
+          "2"
+        ],
+        "radius": {
+          "major": "6371008",
+          "minor": "6371008"
+        },
+        "mapscale": ""
+      },
+      "projection": {
+        "custom": false,
+        "epsg": "",
+        "proj": "",
+        "xmlpath": "",
+        "bounds": [
+          "",
+          "",
+          "",
+          ""
+        ],
+        "origin": [
+          "",
+          ""
+        ],
+        "reszoomlevel": "",
+        "resunitsperpixel": ""
+      },
+      "coordinates": {
+        "coordll": true,
+        "coorden": true,
+        "coordrxy": true,
+        "coordsite": false,
+        "coordlngoffset": "",
+        "coordlatoffset": "",
+        "coordeastoffset": "",
+        "coordnorthoffset": "",
+        "coordeastmult": "",
+        "coordnorthmult": "",
+        "coordcustomproj": false,
+        "coordcustomprojname": "",
+        "coordcustomprojnamex": "",
+        "coordcustomprojnamey": "",
+        "coordcustomprojnamez": "",
+        "coordsecondaryproj": false,
+        "coordsecondaryprojname": "",
+        "coordsecondaryprojnamex": "",
+        "coordsecondaryprojnamey": "",
+        "coordsecondaryprojnamez": "",
+        "coordsecondaryprojstr": "",
+        "coordelev": false,
+        "coordelevurl": "",
+        "coordmain": "ll",
+        "variables": {}
+      },
+      "look": {
+        "pagename": "VISIONS",
+        "minimalist": true,
+        "topbar": true,
+        "toolbar": true,
+        "scalebar": true,
+        "coordinates": true,
+        "zoomcontrol": true,
+        "graticule": false,
+        "miscellaneous": true,
+        "settings": false,
+        "primarycolor": "",
+        "secondarycolor": "",
+        "tertiarycolor": "",
+        "accentcolor": "",
+        "bodycolor": "",
+        "topbarcolor": "",
+        "toolbarcolor": "",
+        "mapcolor": "",
+        "highlightcolor": "",
+        "copylink": true,
+        "screenshot": true,
+        "fullscreen": true,
+        "info": false,
+        "infourl": "",
+        "help": false,
+        "logourl": "",
+        "helpurl": ""
+      },
+      "panels": [
+        "map"
+      ],
+      "panelSettings": {
+        "demFallbackPath": "",
+        "demFallbackFormat": null,
+        "demFallbackType": null
+      },
+      "tools": [
+        {
+          "name": "Layers",
+          "icon": "buffer",
+          "js": "LayersTool",
+          "variables": {
+            "expanded": true
+          }
+        },
+        {
+          "name": "Legend",
+          "icon": "map-legend",
+          "js": "LegendTool",
+          "separatedTool": true,
+          "variables": {
+            "displayOnStart": true
+          }
+        },
+        {
+          "name": "Info",
+          "icon": "information-variant",
+          "js": "InfoTool",
+          "variables": {
+            "sortAlphabetically": false
+          }
+        },
+        {
+          "name": "Sites",
+          "icon": "pin",
+          "js": "SitesTool"
+        },
+        {
+          "name": "Measure",
+          "icon": "chart-areaspline",
+          "js": "MeasureTool"
+        }
+      ],
+      "layers": [
+        {
+          "name": "FORECAST",
+          "uuid": "f1abfa31-457c-4cf1-a9f6-efe8e7db6034",
+          "type": "header",
+          "sublayers": [
+            {
+              "name": "Latest Forecast",
+              "uuid": "3d9e9b7f-9c7c-4c92-94d8-dec04c300168",
+              "kind": "none",
+              "shape": "none",
+              "type": "vector",
+              "url": "Layers/forecasts/latest_forecast.json",
+              "demparser": "",
+              "controlled": false,
+              "layer3dType": "clamped",
+              "description": "",
+              "visibility": false,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "minZoom": 0,
+              "maxZoom": 18,
+              "style": {
+                "className": "latestforecast",
+                "color": "#000",
+                "fillColor": "#0F0",
+                "weight": 1,
+                "fillOpacity": 0.5,
+                "opacity": 1
+              },
+              "variables": {
+                "useKeyAsName": "date",
+                "legend": [
+                  {
+                    "color": "#1C1",
+                    "strokecolor": "#1C1",
+                    "shape": "square",
+                    "value": "Forecasted Coverage"
+                  }
+                ]
+              },
+              "radius": 1,
+              "time": {
+                "enabled": true,
+                "type": "local",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "start_time_iso8601",
+                "endProp": "end_time_iso8601",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": false,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            },
+            {
+              "name": "Target Mask",
+              "uuid": "4c9e9692-87ec-4895-baf3-6de3e92c3e5c",
+              "kind": "none",
+              "shape": "none",
+              "type": "vector",
+              "url": "Layers/coverage/20221109_combined_formated_sza.json",
+              "demparser": "",
+              "controlled": false,
+              "layer3dType": "clamped",
+              "description": "",
+              "visibility": false,
+              "initialOpacity": 0.5,
+              "togglesWithHeader": true,
+              "minZoom": 0,
+              "maxZoom": 18,
+              "style": {
+                "className": "targetmask",
+                "color": "#F00",
+                "fillColor": "#F00",
+                "weight": 0,
+                "fillOpacity": 1,
+                "opacity": 1
+              },
+              "variables": {
+                "useKeyAsName": "date",
+                "legend": [
+                  {
+                    "color": "red",
+                    "strokecolor": "red",
+                    "shape": "square",
+                    "value": "Target Mask"
+                  }
+                ]
+              },
+              "radius": 1,
+              "time": {
+                "enabled": false,
+                "type": "requery",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "",
+                "endProp": "",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": false,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            }
+          ]
+        },
+        {
+          "name": "COVERAGE",
+          "uuid": "06b9550a-0e1e-4145-91bc-16417ed88485",
+          "type": "header",
+          "sublayers": [
+            {
+              "name": "Methane Metadata",
+              "uuid": "8fed617c-0c4e-4841-87d1-f4ffd1a56d4e",
+              "kind": "none",
+              "shape": "none",
+              "type": "vector",
+              "url": "Layers/coverage/combined_plume_metadata.json",
+              "demparser": "",
+              "controlled": false,
+              "layer3dType": "clamped",
+              "description": "",
+              "visibility": false,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "style": {
+                "className": "methanemetadata",
+                "color": "",
+                "fillColor": "",
+                "weight": null,
+                "fillOpacity": null,
+                "opacity": 1
+              },
+              "variables": {
+                "useKeyAsName": [
+                  "Max Plume Concentration (ppm m)",
+                  "Concentration Uncertainty (ppm m)",
+                  "Scene FIDs",
+                  "UTC Time Observed"
+                ],
+                "links": [
+                  {
+                    "name": "Plume Complex Download",
+                    "link": "{Data Download}"
+                  }
+                ],
+                "info": [
+                  {
+                    "which": "last",
+                    "value": "CH4 Plume Complexes: {plume_complex_count}"
+                  }
+                ],
+                "legend": [
+                  {
+                    "color": "black",
+                    "strokecolor": "red",
+                    "shape": "circle",
+                    "value": "Methane Detection"
+                  }
+                ]
+              },
+              "radius": 1,
+              "time": {
+                "enabled": true,
+                "type": "local",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "UTC Time Observed",
+                "endProp": "map_endtime",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": false,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            },
+            {
+              "name": "CO2 Metadata",
+              "uuid": "c42e69ac-a25f-4800-a9e5-940feb8e76da",
+              "kind": "none",
+              "shape": "none",
+              "type": "vector",
+              "url": "Layers/coverage/co2_plume_metadata.json",
+              "demparser": "",
+              "controlled": false,
+              "layer3dType": "clamped",
+              "description": "",
+              "visibility": false,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "style": {
+                "className": "co2metadata",
+                "color": "",
+                "fillColor": "",
+                "weight": null,
+                "fillOpacity": null,
+                "opacity": 1
+              },
+              "variables": {
+                "useKeyAsName": [
+                  "Max Plume Concentration (ppm m)",
+                  "Concentration Uncertainty (ppm m)",
+                  "Scene FID",
+                  "UTC Time Observed"
+                ],
+                "links": [
+                  {
+                    "name": "L1B Radiance Download",
+                    "link": "{L1B Radiance Download}"
+                  }
+                ],
+                "legend": [
+                  {
+                    "color": "black",
+                    "strokecolor": "blue",
+                    "strokeweight": 3,
+                    "shape": "circle",
+                    "value": "CO2 Detection"
+                  }
+                ]
+              },
+              "radius": 1,
+              "time": {
+                "enabled": true,
+                "type": "local",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "UTC Time Observed",
+                "endProp": "map_endtime",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": false,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            },
+            {
+              "name": "Coverage",
+              "uuid": "cc4ed2d0-7fa4-49bd-9b0b-be947ff88115",
+              "kind": "none",
+              "shape": "none",
+              "type": "vector",
+              "url": "Layers/coverage/coverage_pub.json",
+              "demparser": "",
+              "controlled": false,
+              "layer3dType": "clamped",
+              "description": "",
+              "visibility": true,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "minZoom": 0,
+              "maxZoom": 18,
+              "style": {
+                "className": "coverage",
+                "color": "#00F",
+                "fillColor": "#00F",
+                "weight": 1,
+                "fillOpacity": 0.2,
+                "opacity": 1
+              },
+              "variables": {
+                "useKeyAsName": [
+                  "fid"
+                ],
+                "links": [
+                  {
+                    "name": "L1B Radiance",
+                    "link": "{L1B Radiance Download}"
+                  },
+                  {
+                    "name": "L1B Obs",
+                    "link": "{L1B Observation Download}"
+                  },
+                  {
+                    "name": "L2A Reflectance",
+                    "link": "{L2A Reflectance Download}"
+                  },
+                  {
+                    "name": "L2A Reflectance Unc.",
+                    "link": "{L2A Reflectance Uncertainty Download}"
+                  }
+                ],
+                "info": [
+                  {
+                    "which": "last",
+                    "value": "Scenes Available on the LP DAAC: {DAAC_index} / {FID_index} Total"
+                  },
+                  {
+                    "which": "last",
+                    "value": "Latest Data: {end_time}"
+                  }
+                ],
+                "legend": [
+                  {
+                    "color": "#CCF",
+                    "strokecolor": "#03F",
+                    "shape": "square",
+                    "value": "Available on the LP DAAC"
+                  },
+                  {
+                    "color": "#FEC",
+                    "strokecolor": "#FD8",
+                    "shape": "square",
+                    "value": "Coming soon to the LP DAAC"
+                  }
+                ]
+              },
+              "radius": 1,
+              "time": {
+                "enabled": true,
+                "type": "local",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "start_time",
+                "endProp": "end_time",
+                "format": "%Y-%m-%dT%H:%M:%S",
+                "compositeTile": false,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mosaics",
+          "uuid": "a818b33e-2e96-4795-97af-ba895b85463d",
+          "type": "header",
+          "sublayers": [
+            {
+              "name": "Methane Plumes",
+              "uuid": "37414e25-e3d3-4b78-ade5-75edfe4e5da0",
+              "type": "tile",
+              "url": "Layers/mosaics/ch4_plume_tiles/{t}/{z}/{x}/{y}.png",
+              "demtileurl": "",
+              "demparser": "",
+              "controlled": false,
+              "description": "Methance Concentration in ppm m",
+              "legend": "Layers/mosaics/ch4_cmap.csv",
+              "visibility": false,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "minZoom": 2,
+              "maxNativeZoom": 12,
+              "maxZoom": 22,
+              "tileformat": "tms",
+              "time": {
+                "enabled": true,
+                "type": "requery",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "",
+                "endProp": "",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": true,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            },
+            {
+              "name": "CO2 Plumes",
+              "uuid": "617302a1-0ec7-4d04-881f-46259f3c92e4",
+              "type": "tile",
+              "url": "Layers/mosaics/co2_plume_tiles/{t}/{z}/{x}/{y}.png",
+              "demtileurl": "",
+              "demparser": "",
+              "controlled": false,
+              "description": "CO2 Concentration in ppm m",
+              "legend": "Layers/mosaics/co2_cmap.csv",
+              "visibility": false,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "minZoom": 2,
+              "maxNativeZoom": 12,
+              "maxZoom": 22,
+              "tileformat": "tms",
+              "time": {
+                "enabled": true,
+                "type": "requery",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "",
+                "endProp": "",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": true,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            },
+            {
+              "name": "RGB Mosaic",
+              "uuid": "fc8cddbf-daec-434d-8d70-98ec9a093ba2",
+              "type": "tile",
+              "url": "Layers/mosaics/mosaic_temporal_rgb/{t}/{z}/{x}/{y}.png",
+              "demtileurl": "",
+              "demparser": "",
+              "controlled": false,
+              "description": "",
+              "visibility": true,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "minZoom": 4,
+              "maxNativeZoom": 12,
+              "maxZoom": 22,
+              "tileformat": "tms",
+              "time": {
+                "enabled": true,
+                "type": "requery",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "",
+                "endProp": "",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": true,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            },
+            {
+              "name": "Cloud Free Coverage Through 05-30-2023",
+              "uuid": "b25181c4-c5eb-45ad-bf7b-db28aa9ca3c8",
+              "type": "tile",
+              "url": "Layers/mosaics/tiled_coverage_20230530/{z}/{x}/{y}.png",
+              "demtileurl": "",
+              "demparser": "",
+              "controlled": false,
+              "description": "Cloud Free Observations",
+              "legend": "Layers/mosaics/coverage_cmap.csv",
+              "visibility": false,
+              "initialOpacity": 1,
+              "togglesWithHeader": true,
+              "minZoom": 2,
+              "maxNativeZoom": 12,
+              "maxZoom": 22,
+              "tileformat": "tms",
+              "time": {
+                "enabled": false,
+                "type": "requery",
+                "isRelative": true,
+                "current": "2023-10-08T05:34:38Z",
+                "start": "",
+                "end": "",
+                "startProp": "",
+                "endProp": "",
+                "format": "%Y-%m-%dT%H:%M:%SZ",
+                "compositeTile": true,
+                "refresh": "1 hours",
+                "increment": "5 minutes"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hybrid Basemap",
+          "uuid": "ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13",
+          "type": "tile",
+          "url": "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+          "demtileurl": "",
+          "demparser": "",
+          "controlled": false,
+          "description": "",
+          "visibility": true,
+          "initialOpacity": 0.7,
+          "togglesWithHeader": true,
+          "minZoom": 0,
+          "maxNativeZoom": 8,
+          "maxZoom": 22,
+          "boundingBox": [
+            -180,
+            -85.05112878,
+            179.99654660733782,
+            85.05112878
+          ],
+          "tileformat": "wms",
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-08T05:34:38Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "Satellite Basemap",
+          "uuid": "eb815af0-c76b-4d0f-b070-f8129c76ff5b",
+          "type": "tile",
+          "url": "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+          "demtileurl": "",
+          "demparser": "",
+          "controlled": false,
+          "description": "",
+          "visibility": false,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "minZoom": 0,
+          "maxNativeZoom": 8,
+          "maxZoom": 18,
+          "boundingBox": [
+            -180,
+            -85.05112878,
+            179.99654660733782,
+            85.05112878
+          ],
+          "tileformat": "wms",
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-08T05:34:38Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "Open Street Map",
+          "uuid": "c07628ff-4fc5-4f84-bd4f-09d641cbc2b8",
+          "type": "tile",
+          "url": "https://maps.omniscale.net/v2/mapsosc-b667cf5a/map?layers=osm",
+          "demtileurl": "",
+          "demparser": "",
+          "controlled": false,
+          "description": "",
+          "visibility": false,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "minZoom": 0,
+          "maxNativeZoom": 6,
+          "maxZoom": 18,
+          "boundingBox": [
+            241237.5,
+            3244537.5,
+            371092.5,
+            3332272.5
+          ],
+          "tileformat": "wms",
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-08T05:34:38Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        }
+      ],
+      "time": {
+        "enabled": true,
+        "visible": true,
+        "initiallyOpen": true,
+        "format": "",
+        "initialstart": "2022-08-10T00:00:00Z",
+        "initialend": "2023-10-30T00:00:00Z"
+      }
+    },
+    "ECOSTRESS": {
+      "msv": {
+        "mission": "EMIT",
+        "site": "ert",
+        "masterdb": false,
+        "view": [
+          "0",
+          "0",
+          "2"
+        ],
+        "radius": {
+          "major": "6371008",
+          "minor": "6371008"
+        },
+        "mapscale": ""
+      },
+      "projection": {
+        "custom": false,
+        "epsg": "",
+        "proj": "",
+        "xmlpath": "",
+        "bounds": [
+          "",
+          "",
+          "",
+          ""
+        ],
+        "origin": [
+          "",
+          ""
+        ],
+        "reszoomlevel": "",
+        "resunitsperpixel": ""
+      },
+      "coordinates": {
+        "coordll": true,
+        "coorden": true,
+        "coordrxy": true,
+        "coordsite": false,
+        "coordlngoffset": "",
+        "coordlatoffset": "",
+        "coordeastoffset": "",
+        "coordnorthoffset": "",
+        "coordeastmult": "",
+        "coordnorthmult": "",
+        "coordcustomproj": false,
+        "coordcustomprojname": "",
+        "coordcustomprojnamex": "",
+        "coordcustomprojnamey": "",
+        "coordcustomprojnamez": "",
+        "coordsecondaryproj": false,
+        "coordsecondaryprojname": "",
+        "coordsecondaryprojnamex": "",
+        "coordsecondaryprojnamey": "",
+        "coordsecondaryprojnamez": "",
+        "coordsecondaryprojstr": "",
+        "coordelev": false,
+        "coordelevurl": "",
+        "coordmain": "ll",
+        "variables": {}
+      },
+      "look": {
+        "pagename": "VISIONS",
+        "minimalist": true,
+        "topbar": true,
+        "toolbar": true,
+        "scalebar": true,
+        "coordinates": true,
+        "zoomcontrol": true,
+        "graticule": false,
+        "miscellaneous": true,
+        "settings": false,
+        "primarycolor": "",
+        "secondarycolor": "",
+        "tertiarycolor": "",
+        "accentcolor": "",
+        "bodycolor": "",
+        "topbarcolor": "",
+        "toolbarcolor": "",
+        "mapcolor": "",
+        "highlightcolor": "",
+        "copylink": true,
+        "screenshot": true,
+        "fullscreen": true,
+        "info": false,
+        "infourl": "",
+        "help": false,
+        "logourl": "",
+        "helpurl": ""
+      },
+      "panels": [
+        "map"
+      ],
+      "panelSettings": {
+        "demFallbackPath": "",
+        "demFallbackFormat": null,
+        "demFallbackType": null
+      },
+      "tools": [
+        {
+          "name": "Layers",
+          "icon": "buffer",
+          "js": "LayersTool",
+          "variables": {
+            "expanded": true
+          }
+        },
+        {
+          "name": "Legend",
+          "icon": "map-legend",
+          "js": "LegendTool",
+          "separatedTool": true,
+          "variables": {
+            "displayOnStart": true
+          }
+        },
+        {
+          "name": "Info",
+          "icon": "information-variant",
+          "js": "InfoTool",
+          "variables": {
+            "sortAlphabetically": false
+          }
+        },
+        {
+          "name": "Sites",
+          "icon": "pin",
+          "js": "SitesTool"
+        },
+        {
+          "name": "Measure",
+          "icon": "chart-areaspline",
+          "js": "MeasureTool"
+        }
+      ],
+      "layers": [
+        {
+          "name": "ECO2CLD.001",
+          "visibility": true,
+          "initialOpacity": 1,
+          "type": "FeatureCollection",
+          "uuid": "ECO2CLD.001",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-167.939484,53.389309;-161.428986,49.107025",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_002_20231007T000720_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -167.939484,
+                      53.389309
+                    ],
+                    [
+                      -161.428986,
+                      53.389309
+                    ],
+                    [
+                      -161.428986,
+                      49.107025
+                    ],
+                    [
+                      -167.939484,
+                      49.107025
+                    ],
+                    [
+                      -167.939484,
+                      53.389309
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-125.897049,49.811760;-119.602699,44.843746",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_004_20231007T001438_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -125.897049,
+                      49.81176
+                    ],
+                    [
+                      -119.602699,
+                      49.81176
+                    ],
+                    [
+                      -119.602699,
+                      44.843746
+                    ],
+                    [
+                      -125.897049,
+                      44.843746
+                    ],
+                    [
+                      -125.897049,
+                      49.81176
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-98.465988,34.748997;-92.931419,29.480276",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_006_20231007T002130_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -98.465988,
+                      34.748997
+                    ],
+                    [
+                      -92.931419,
+                      34.748997
+                    ],
+                    [
+                      -92.931419,
+                      29.480276
+                    ],
+                    [
+                      -98.465988,
+                      29.480276
+                    ],
+                    [
+                      -98.465988,
+                      34.748997
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-95.801842,32.413700;-90.388268,27.143969",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_007_20231007T002222_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -95.801842,
+                      32.4137
+                    ],
+                    [
+                      -90.388268,
+                      32.4137
+                    ],
+                    [
+                      -90.388268,
+                      27.143969
+                    ],
+                    [
+                      -95.801842,
+                      27.143969
+                    ],
+                    [
+                      -95.801842,
+                      32.4137
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-87.624687,24.053890;-82.566956,18.797161",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_009_20231007T002519_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -87.624687,
+                      24.05389
+                    ],
+                    [
+                      -82.566956,
+                      24.05389
+                    ],
+                    [
+                      -82.566956,
+                      18.797161
+                    ],
+                    [
+                      -87.624687,
+                      18.797161
+                    ],
+                    [
+                      -87.624687,
+                      24.05389
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-79.209442,13.616884;-74.415833,8.378636",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_011_20231007T002850_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -79.209442,
+                      13.616884
+                    ],
+                    [
+                      -74.415833,
+                      13.616884
+                    ],
+                    [
+                      -74.415833,
+                      8.378636
+                    ],
+                    [
+                      -79.209442,
+                      8.378636
+                    ],
+                    [
+                      -79.209442,
+                      13.616884
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-77.264175,10.988933;-72.508171,5.758423",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_012_20231007T002941_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -77.264175,
+                      10.988933
+                    ],
+                    [
+                      -72.508171,
+                      10.988933
+                    ],
+                    [
+                      -72.508171,
+                      5.758423
+                    ],
+                    [
+                      -77.264175,
+                      5.758423
+                    ],
+                    [
+                      -77.264175,
+                      10.988933
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-75.344795,8.348277;-70.623940,3.114887",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_013_20231007T003033_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -75.344795,
+                      8.348277
+                    ],
+                    [
+                      -70.62394,
+                      8.348277
+                    ],
+                    [
+                      -70.62394,
+                      3.114887
+                    ],
+                    [
+                      -75.344795,
+                      3.114887
+                    ],
+                    [
+                      -75.344795,
+                      8.348277
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-73.467804,5.703662;-68.753578,0.468513",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_014_20231007T003125_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -73.467804,
+                      5.703662
+                    ],
+                    [
+                      -68.753578,
+                      5.703662
+                    ],
+                    [
+                      -68.753578,
+                      0.468513
+                    ],
+                    [
+                      -73.467804,
+                      0.468513
+                    ],
+                    [
+                      -73.467804,
+                      5.703662
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-71.598747,3.054670;-66.887856,-2.182277",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_015_20231007T003217_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -71.598747,
+                      3.05467
+                    ],
+                    [
+                      -66.887856,
+                      3.05467
+                    ],
+                    [
+                      -66.887856,
+                      -2.182277
+                    ],
+                    [
+                      -71.598747,
+                      -2.182277
+                    ],
+                    [
+                      -71.598747,
+                      3.05467
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-53.650883,-20.688284;-48.465733,-25.999149",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_017_20231007T004013_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -53.650883,
+                      -20.688284
+                    ],
+                    [
+                      -48.465733,
+                      -20.688284
+                    ],
+                    [
+                      -48.465733,
+                      -25.999149
+                    ],
+                    [
+                      -53.650883,
+                      -25.999149
+                    ],
+                    [
+                      -53.650883,
+                      -20.688284
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-51.408443,-23.144859;-46.118820,-28.468479",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_018_20231007T004105_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -51.408443,
+                      -23.144859
+                    ],
+                    [
+                      -46.11882,
+                      -23.144859
+                    ],
+                    [
+                      -46.11882,
+                      -28.468479
+                    ],
+                    [
+                      -51.408443,
+                      -28.468479
+                    ],
+                    [
+                      -51.408443,
+                      -23.144859
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-41.945362,-31.933485;-36.187283,-37.286228",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29778_020_20231007T004421_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -41.945362,
+                      -31.933485
+                    ],
+                    [
+                      -36.187283,
+                      -31.933485
+                    ],
+                    [
+                      -36.187283,
+                      -37.286228
+                    ],
+                    [
+                      -41.945362,
+                      -37.286228
+                    ],
+                    [
+                      -41.945362,
+                      -31.933485
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-136.202667,-32.055676;-130.432098,-37.407482",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_001_20231007T065548_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -136.202667,
+                      -32.055676
+                    ],
+                    [
+                      -130.432098,
+                      -32.055676
+                    ],
+                    [
+                      -130.432098,
+                      -37.407482
+                    ],
+                    [
+                      -136.202667,
+                      -37.407482
+                    ],
+                    [
+                      -136.202667,
+                      -32.055676
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-133.340683,-34.220699;-127.439316,-39.569237",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_002_20231007T065640_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -133.340683,
+                      -34.220699
+                    ],
+                    [
+                      -127.439316,
+                      -34.220699
+                    ],
+                    [
+                      -127.439316,
+                      -39.569237
+                    ],
+                    [
+                      -133.340683,
+                      -39.569237
+                    ],
+                    [
+                      -133.340683,
+                      -34.220699
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-130.299057,-36.299301;-124.271248,-41.637726",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_003_20231007T065732_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -130.299057,
+                      -36.299301
+                    ],
+                    [
+                      -124.271248,
+                      -36.299301
+                    ],
+                    [
+                      -124.271248,
+                      -41.637726
+                    ],
+                    [
+                      -130.299057,
+                      -41.637726
+                    ],
+                    [
+                      -130.299057,
+                      -36.299301
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-77.273582,-49.534428;-71.199341,-53.729778",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_005_20231007T070754_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -77.273582,
+                      -49.534428
+                    ],
+                    [
+                      -71.199341,
+                      -49.534428
+                    ],
+                    [
+                      -71.199341,
+                      -53.729778
+                    ],
+                    [
+                      -77.273582,
+                      -53.729778
+                    ],
+                    [
+                      -77.273582,
+                      -49.534428
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-72.353523,-49.083885;-65.918571,-53.473625",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_006_20231007T070846_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -72.353523,
+                      -49.083885
+                    ],
+                    [
+                      -65.918571,
+                      -49.083885
+                    ],
+                    [
+                      -65.918571,
+                      -53.473625
+                    ],
+                    [
+                      -72.353523,
+                      -53.473625
+                    ],
+                    [
+                      -72.353523,
+                      -49.083885
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-67.505058,-48.412598;-60.792599,-52.967789",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_007_20231007T070938_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -67.505058,
+                      -48.412598
+                    ],
+                    [
+                      -60.792599,
+                      -48.412598
+                    ],
+                    [
+                      -60.792599,
+                      -52.967789
+                    ],
+                    [
+                      -67.505058,
+                      -52.967789
+                    ],
+                    [
+                      -67.505058,
+                      -48.412598
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-62.768055,-47.528263;-55.866024,-52.219212",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_008_20231007T071030_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -62.768055,
+                      -47.528263
+                    ],
+                    [
+                      -55.866024,
+                      -47.528263
+                    ],
+                    [
+                      -55.866024,
+                      -52.219212
+                    ],
+                    [
+                      -62.768055,
+                      -52.219212
+                    ],
+                    [
+                      -62.768055,
+                      -47.528263
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-6.792405,-9.978193;-1.626764,-14.856326",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29782_010_20231007T072614_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -6.792405,
+                      -9.978193
+                    ],
+                    [
+                      -1.626764,
+                      -9.978193
+                    ],
+                    [
+                      -1.626764,
+                      -14.856326
+                    ],
+                    [
+                      -6.792405,
+                      -14.856326
+                    ],
+                    [
+                      -6.792405,
+                      -9.978193
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "9.191786,12.243695;14.269499,7.398944",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_002_20231007T073332_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      9.191786,
+                      12.243695
+                    ],
+                    [
+                      14.269499,
+                      12.243695
+                    ],
+                    [
+                      14.269499,
+                      7.398944
+                    ],
+                    [
+                      9.191786,
+                      7.398944
+                    ],
+                    [
+                      9.191786,
+                      12.243695
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "11.111168,14.866196;16.241587,10.016514",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_003_20231007T073424_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      11.111168,
+                      14.866196
+                    ],
+                    [
+                      16.241587,
+                      14.866196
+                    ],
+                    [
+                      16.241587,
+                      10.016514
+                    ],
+                    [
+                      11.111168,
+                      10.016514
+                    ],
+                    [
+                      11.111168,
+                      14.866196
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "13.070533,17.471949;18.262480,12.616648",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_004_20231007T073516_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      13.070533,
+                      17.471949
+                    ],
+                    [
+                      18.26248,
+                      17.471949
+                    ],
+                    [
+                      18.26248,
+                      12.616648
+                    ],
+                    [
+                      13.070533,
+                      12.616648
+                    ],
+                    [
+                      13.070533,
+                      17.471949
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "15.077885,20.054445;20.343300,15.192762",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_005_20231007T073608_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      15.077885,
+                      20.054445
+                    ],
+                    [
+                      20.3433,
+                      20.054445
+                    ],
+                    [
+                      20.3433,
+                      15.192762
+                    ],
+                    [
+                      15.077885,
+                      15.192762
+                    ],
+                    [
+                      15.077885,
+                      20.054445
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "17.145800,22.611603;22.495655,17.740992",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_006_20231007T073700_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      17.1458,
+                      22.611603
+                    ],
+                    [
+                      22.495655,
+                      22.611603
+                    ],
+                    [
+                      22.495655,
+                      17.740992
+                    ],
+                    [
+                      17.1458,
+                      17.740992
+                    ],
+                    [
+                      17.1458,
+                      22.611603
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "26.395828,32.628990;32.227161,27.702723",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_008_20231007T074032_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      26.395828,
+                      32.62899
+                    ],
+                    [
+                      32.227161,
+                      32.62899
+                    ],
+                    [
+                      32.227161,
+                      27.702723
+                    ],
+                    [
+                      26.395828,
+                      27.702723
+                    ],
+                    [
+                      26.395828,
+                      32.62899
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "42.569855,44.452904;49.242767,39.559696",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_010_20231007T074519_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      42.569855,
+                      44.452904
+                    ],
+                    [
+                      49.242767,
+                      44.452904
+                    ],
+                    [
+                      49.242767,
+                      39.559696
+                    ],
+                    [
+                      42.569855,
+                      39.559696
+                    ],
+                    [
+                      42.569855,
+                      44.452904
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "59.898037,51.045902;66.857162,46.374962",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_012_20231007T074904_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      59.898037,
+                      51.045902
+                    ],
+                    [
+                      66.857162,
+                      51.045902
+                    ],
+                    [
+                      66.857162,
+                      46.374962
+                    ],
+                    [
+                      59.898037,
+                      46.374962
+                    ],
+                    [
+                      59.898037,
+                      51.045902
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "123.465981,47.102703;129.716858,41.991070",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_014_20231007T080027_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      123.465981,
+                      47.102703
+                    ],
+                    [
+                      129.716858,
+                      47.102703
+                    ],
+                    [
+                      129.716858,
+                      41.99107
+                    ],
+                    [
+                      123.465981,
+                      41.99107
+                    ],
+                    [
+                      123.465981,
+                      47.102703
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "127.246445,45.383492;133.413788,40.216896",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_015_20231007T080119_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      127.246445,
+                      45.383492
+                    ],
+                    [
+                      133.413788,
+                      45.383492
+                    ],
+                    [
+                      133.413788,
+                      40.216896
+                    ],
+                    [
+                      127.246445,
+                      40.216896
+                    ],
+                    [
+                      127.246445,
+                      45.383492
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "136.865128,39.811180;142.702164,34.562534",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_017_20231007T080346_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      136.865128,
+                      39.81118
+                    ],
+                    [
+                      142.702164,
+                      39.81118
+                    ],
+                    [
+                      142.702164,
+                      34.562534
+                    ],
+                    [
+                      136.865128,
+                      34.562534
+                    ],
+                    [
+                      136.865128,
+                      39.81118
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "143.128464,35.092438;148.686340,29.827885",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_019_20231007T080537_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      143.128464,
+                      35.092438
+                    ],
+                    [
+                      148.68634,
+                      35.092438
+                    ],
+                    [
+                      148.68634,
+                      29.827885
+                    ],
+                    [
+                      143.128464,
+                      29.827885
+                    ],
+                    [
+                      143.128464,
+                      35.092438
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "155.315720,22.990723;160.331924,17.743212",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_021_20231007T080956_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      155.31572,
+                      22.990723
+                    ],
+                    [
+                      160.331924,
+                      22.990723
+                    ],
+                    [
+                      160.331924,
+                      17.743212
+                    ],
+                    [
+                      155.31572,
+                      17.743212
+                    ],
+                    [
+                      155.31572,
+                      22.990723
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-137.938309,-44.113293;-131.595932,-49.238777",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_023_20231007T083411_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -137.938309,
+                      -44.113293
+                    ],
+                    [
+                      -131.595932,
+                      -44.113293
+                    ],
+                    [
+                      -131.595932,
+                      -49.238777
+                    ],
+                    [
+                      -137.938309,
+                      -49.238777
+                    ],
+                    [
+                      -137.938309,
+                      -44.113293
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-133.644928,-45.510395;-127.333740,-50.539860",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_024_20231007T083503_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -133.644928,
+                      -45.510395
+                    ],
+                    [
+                      -127.33374,
+                      -45.510395
+                    ],
+                    [
+                      -127.33374,
+                      -50.53986
+                    ],
+                    [
+                      -133.644928,
+                      -50.53986
+                    ],
+                    [
+                      -133.644928,
+                      -45.510395
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-78.307297,-45.454063;-71.265762,-50.315311",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_026_20231007T084454_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -78.307297,
+                      -45.454063
+                    ],
+                    [
+                      -71.265762,
+                      -45.454063
+                    ],
+                    [
+                      -71.265762,
+                      -50.315311
+                    ],
+                    [
+                      -78.307297,
+                      -50.315311
+                    ],
+                    [
+                      -78.307297,
+                      -45.454063
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-74.051445,-44.053867;-67.023308,-48.975864",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_027_20231007T084546_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -74.051445,
+                      -44.053867
+                    ],
+                    [
+                      -67.023308,
+                      -44.053867
+                    ],
+                    [
+                      -67.023308,
+                      -48.975864
+                    ],
+                    [
+                      -74.051445,
+                      -48.975864
+                    ],
+                    [
+                      -74.051445,
+                      -44.053867
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-69.996429,-42.488766;-63.036812,-47.462173",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_028_20231007T084638_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -69.996429,
+                      -42.488766
+                    ],
+                    [
+                      -63.036812,
+                      -42.488766
+                    ],
+                    [
+                      -63.036812,
+                      -47.462173
+                    ],
+                    [
+                      -69.996429,
+                      -47.462173
+                    ],
+                    [
+                      -69.996429,
+                      -42.488766
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-66.163536,-40.782459;-59.300140,-45.787800",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_029_20231007T084730_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -66.163536,
+                      -40.782459
+                    ],
+                    [
+                      -59.30014,
+                      -40.782459
+                    ],
+                    [
+                      -59.30014,
+                      -45.7878
+                    ],
+                    [
+                      -66.163536,
+                      -45.7878
+                    ],
+                    [
+                      -66.163536,
+                      -40.782459
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-62.534695,-38.950424;-55.798416,-43.972866",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29783_030_20231007T084822_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -62.534695,
+                      -38.950424
+                    ],
+                    [
+                      -55.798416,
+                      -38.950424
+                    ],
+                    [
+                      -55.798416,
+                      -43.972866
+                    ],
+                    [
+                      -62.534695,
+                      -43.972866
+                    ],
+                    [
+                      -62.534695,
+                      -38.950424
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-13.475686,13.523174;-8.370718,8.674324",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_001_20231007T090648_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -13.475686,
+                      13.523174
+                    ],
+                    [
+                      -8.370718,
+                      13.523174
+                    ],
+                    [
+                      -8.370718,
+                      8.674324
+                    ],
+                    [
+                      -13.475686,
+                      8.674324
+                    ],
+                    [
+                      -13.475686,
+                      13.523174
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-11.536484,16.141121;-6.376686,11.283736",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_002_20231007T090740_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -11.536484,
+                      16.141121
+                    ],
+                    [
+                      -6.376686,
+                      16.141121
+                    ],
+                    [
+                      -6.376686,
+                      11.283736
+                    ],
+                    [
+                      -11.536484,
+                      11.283736
+                    ],
+                    [
+                      -11.536484,
+                      16.141121
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "11.552057,39.852325;17.879595,34.918159",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_004_20231007T091609_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      11.552057,
+                      39.852325
+                    ],
+                    [
+                      17.879595,
+                      39.852325
+                    ],
+                    [
+                      17.879595,
+                      34.918159
+                    ],
+                    [
+                      11.552057,
+                      34.918159
+                    ],
+                    [
+                      11.552057,
+                      39.852325
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "14.633035,41.917316;21.116032,36.987602",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_005_20231007T091701_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      14.633035,
+                      41.917316
+                    ],
+                    [
+                      21.116032,
+                      41.917316
+                    ],
+                    [
+                      21.116032,
+                      36.987602
+                    ],
+                    [
+                      14.633035,
+                      36.987602
+                    ],
+                    [
+                      14.633035,
+                      41.917316
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "17.914940,43.872967;24.548092,38.957211",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_006_20231007T091753_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      17.91494,
+                      43.872967
+                    ],
+                    [
+                      24.548092,
+                      43.872967
+                    ],
+                    [
+                      24.548092,
+                      38.957211
+                    ],
+                    [
+                      17.91494,
+                      38.957211
+                    ],
+                    [
+                      17.91494,
+                      43.872967
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "21.420315,45.704540;28.184717,40.812782",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_007_20231007T091845_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      21.420315,
+                      45.70454
+                    ],
+                    [
+                      28.184717,
+                      45.70454
+                    ],
+                    [
+                      28.184717,
+                      40.812782
+                    ],
+                    [
+                      21.420315,
+                      40.812782
+                    ],
+                    [
+                      21.420315,
+                      45.70454
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "36.348579,51.072491;43.307808,46.399673",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_009_20231007T092156_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      36.348579,
+                      51.072491
+                    ],
+                    [
+                      43.307808,
+                      51.072491
+                    ],
+                    [
+                      43.307808,
+                      46.399673
+                    ],
+                    [
+                      36.348579,
+                      46.399673
+                    ],
+                    [
+                      36.348579,
+                      51.072491
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "41.028324,52.087837;47.920044,47.528824",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_010_20231007T092248_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      41.028324,
+                      52.087837
+                    ],
+                    [
+                      47.920044,
+                      52.087837
+                    ],
+                    [
+                      47.920044,
+                      47.528824
+                    ],
+                    [
+                      41.028324,
+                      47.528824
+                    ],
+                    [
+                      41.028324,
+                      52.087837
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "45.965702,52.879108;52.677292,48.456181",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_011_20231007T092340_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      45.965702,
+                      52.879108
+                    ],
+                    [
+                      52.677292,
+                      52.879108
+                    ],
+                    [
+                      52.677292,
+                      48.456181
+                    ],
+                    [
+                      45.965702,
+                      48.456181
+                    ],
+                    [
+                      45.965702,
+                      52.879108
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "112.247444,40.497852;118.121735,35.262196",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_013_20231007T093620_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      112.247444,
+                      40.497852
+                    ],
+                    [
+                      118.121735,
+                      40.497852
+                    ],
+                    [
+                      118.121735,
+                      35.262196
+                    ],
+                    [
+                      112.247444,
+                      35.262196
+                    ],
+                    [
+                      112.247444,
+                      40.497852
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "115.330170,38.371834;121.073990,33.115711",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_014_20231007T093712_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      115.33017,
+                      38.371834
+                    ],
+                    [
+                      121.07399,
+                      38.371834
+                    ],
+                    [
+                      121.07399,
+                      33.115711
+                    ],
+                    [
+                      115.33017,
+                      33.115711
+                    ],
+                    [
+                      115.33017,
+                      38.371834
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "124.700874,30.459394;130.016068,25.197588",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_016_20231007T094010_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      124.700874,
+                      30.459394
+                    ],
+                    [
+                      130.016068,
+                      30.459394
+                    ],
+                    [
+                      130.016068,
+                      25.197588
+                    ],
+                    [
+                      124.700874,
+                      25.197588
+                    ],
+                    [
+                      124.700874,
+                      30.459394
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "149.580292,-0.861655;154.294159,-6.095044",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_018_20231007T095040_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      149.580292,
+                      -0.861655
+                    ],
+                    [
+                      154.294159,
+                      -0.861655
+                    ],
+                    [
+                      154.294159,
+                      -6.095044
+                    ],
+                    [
+                      149.580292,
+                      -6.095044
+                    ],
+                    [
+                      149.580292,
+                      -0.861655
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "151.447678,-3.502589;156.185425,-8.741015",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_019_20231007T095132_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      151.447678,
+                      -3.502589
+                    ],
+                    [
+                      156.185425,
+                      -3.502589
+                    ],
+                    [
+                      156.185425,
+                      -8.741015
+                    ],
+                    [
+                      151.447678,
+                      -8.741015
+                    ],
+                    [
+                      151.447678,
+                      -3.502589
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "155.454056,-9.048759;160.277802,-14.301810",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29784_021_20231007T095322_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      155.454056,
+                      -9.048759
+                    ],
+                    [
+                      160.277802,
+                      -9.048759
+                    ],
+                    [
+                      160.277802,
+                      -14.30181
+                    ],
+                    [
+                      155.454056,
+                      -14.30181
+                    ],
+                    [
+                      155.454056,
+                      -9.048759
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "-142.019226,29.381104;-136.360931,24.475338",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2CLD.001/2023.10.07/ECOSTRESS_L2_CLOUD_29790_001_20231007T182917_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -142.019226,
+                      29.381104
+                    ],
+                    [
+                      -136.360931,
+                      29.381104
+                    ],
+                    [
+                      -136.360931,
+                      24.475338
+                    ],
+                    [
+                      -142.019226,
+                      24.475338
+                    ],
+                    [
+                      -142.019226,
+                      29.381104
+                    ]
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ECO2LSTE.001",
+          "visibility": true,
+          "initialOpacity": 1,
+          "type": "FeatureCollection",
+          "uuid": "ECO2LSTE.001",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "name": "155.454056,-9.048759;160.277802,-14.301810",
+                "h5url": "https://github.com/zubearc/nasa-ecostress/blob/master/ECO2LSTE.001/2023.10.07/ECOSTRESS_L2_LSTE_29784_021_20231007T095322_0601_01.h5"
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      155.454056,
+                      -9.048759
+                    ],
+                    [
+                      160.277802,
+                      -9.048759
+                    ],
+                    [
+                      160.277802,
+                      -14.30181
+                    ],
+                    [
+                      155.454056,
+                      -14.30181
+                    ],
+                    [
+                      155.454056,
+                      -9.048759
+                    ]
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hybrid Basemap",
+          "uuid": "ba365157-1ba0-4c7e-9a3a-4bce7ad3ed13",
+          "type": "tile",
+          "url": "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+          "demtileurl": "",
+          "demparser": "",
+          "controlled": false,
+          "description": "",
+          "visibility": true,
+          "initialOpacity": 0.7,
+          "togglesWithHeader": true,
+          "minZoom": 0,
+          "maxNativeZoom": 8,
+          "maxZoom": 22,
+          "boundingBox": [
+            -180,
+            -85.05112878,
+            179.99654660733782,
+            85.05112878
+          ],
+          "tileformat": "wms",
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-08T05:34:38Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        }
+      ],
+      "time": {
+        "enabled": true,
+        "visible": true,
+        "initiallyOpen": true,
+        "format": "",
+        "initialstart": "2022-08-10T00:00:00Z",
+        "initialend": "2023-10-30T00:00:00Z"
+      }
+    }
+  }
+}

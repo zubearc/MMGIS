@@ -1,0 +1,505 @@
+{
+  "msv": {
+    "mission": "Test",
+    "site": "",
+    "masterdb": false,
+    "view": [
+      "0",
+      "0",
+      "0"
+    ],
+    "radius": {
+      "major": "3396190",
+      "minor": "3396190"
+    },
+    "mapscale": ""
+  },
+  "projection": {
+    "custom": false,
+    "epsg": "",
+    "proj": "",
+    "xmlpath": "",
+    "bounds": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "origin": [
+      "",
+      ""
+    ],
+    "reszoomlevel": "",
+    "resunitsperpixel": ""
+  },
+  "coordinates": {
+    "coordll": true,
+    "coorden": true,
+    "coordrxy": true,
+    "coordsite": false,
+    "coordlngoffset": "",
+    "coordlatoffset": "",
+    "coordeastoffset": "",
+    "coordnorthoffset": "",
+    "coordeastmult": "",
+    "coordnorthmult": "",
+    "coordcustomproj": false,
+    "coordcustomprojname": "",
+    "coordcustomprojnamex": "",
+    "coordcustomprojnamey": "",
+    "coordcustomprojnamez": "",
+    "coordsecondaryproj": false,
+    "coordsecondaryprojname": "",
+    "coordsecondaryprojnamex": "",
+    "coordsecondaryprojnamey": "",
+    "coordsecondaryprojnamez": "",
+    "coordsecondaryprojstr": "",
+    "coordelev": false,
+    "coordelevurl": "",
+    "coordmain": "ll",
+    "variables": {}
+  },
+  "look": {
+    "pagename": "MMGIS",
+    "minimalist": false,
+    "topbar": true,
+    "toolbar": true,
+    "scalebar": true,
+    "coordinates": true,
+    "zoomcontrol": false,
+    "graticule": false,
+    "miscellaneous": true,
+    "settings": true,
+    "primarycolor": "",
+    "secondarycolor": "",
+    "tertiarycolor": "",
+    "accentcolor": "",
+    "bodycolor": "",
+    "topbarcolor": "",
+    "toolbarcolor": "",
+    "mapcolor": "",
+    "highlightcolor": "",
+    "copylink": true,
+    "screenshot": true,
+    "fullscreen": true,
+    "info": false,
+    "infourl": "",
+    "help": true,
+    "logourl": "",
+    "helpurl": ""
+  },
+  "panels": [
+    "viewer",
+    "map",
+    "globe"
+  ],
+  "panelSettings": {
+    "demFallbackPath": "",
+    "demFallbackFormat": null,
+    "demFallbackType": null
+  },
+  "tools": [
+    {
+      "name": "Layers",
+      "icon": "buffer",
+      "js": "LayersTool"
+    },
+    {
+      "name": "Legend",
+      "icon": "format-list-bulleted-type",
+      "js": "LegendTool",
+      "separatedTool": true
+    },
+    {
+      "name": "Info",
+      "icon": "information-variant",
+      "js": "InfoTool"
+    },
+    {
+      "name": "Sites",
+      "icon": "pin",
+      "js": "SitesTool",
+      "variables": {
+        "sites": [
+          {
+            "name": "Site1",
+            "code": "S1",
+            "view": [
+              -4.667975771815966,
+              137.370253354311,
+              16
+            ]
+          },
+          {
+            "name": "Site2",
+            "code": "S2",
+            "view": [
+              -4.667985128408622,
+              137.3702734708786,
+              20
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Chemistry",
+      "icon": "flask",
+      "js": "ChemistryTool"
+    },
+    {
+      "name": "Identifier",
+      "icon": "map-marker",
+      "js": "IdentifierTool",
+      "variables": {
+        "Tile with DEM": {
+          "url": "Data/missionDEM.tif",
+          "unit": "m"
+        }
+      }
+    },
+    {
+      "name": "Measure",
+      "icon": "chart-areaspline",
+      "js": "MeasureTool",
+      "variables": {
+        "dem": "Data/missionDEM.tif"
+      }
+    },
+    {
+      "name": "Draw",
+      "icon": "lead-pencil",
+      "js": "DrawTool"
+    }
+  ],
+  "layers": [
+    {
+      "name": "A Header",
+      "uuid": "f6561467-5b7c-407e-b008-ac667704a1c3",
+      "type": "header",
+      "sublayers": [
+        {
+          "name": "S1 Drawings",
+          "uuid": "34de02bf-cece-4e2d-b29a-48dadb5c4408",
+          "kind": "none",
+          "shape": "none",
+          "type": "vector",
+          "url": "Drawn/S1_speDrawings.geojson",
+          "demparser": "",
+          "controlled": false,
+          "layer3dType": "clamped",
+          "description": "",
+          "visibility": false,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "style": {
+            "className": "s1drawings",
+            "color": "undefined",
+            "fillColor": "undefined",
+            "weight": null,
+            "fillOpacity": 1,
+            "opacity": 1
+          },
+          "variables": {},
+          "radius": 1,
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:12Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "S2 Drawings",
+          "uuid": "6a621a11-22fb-427d-9f7b-794fa501ac76",
+          "kind": "none",
+          "shape": "none",
+          "type": "vector",
+          "url": "Drawn/S2_speDrawings.geojson",
+          "demparser": "",
+          "controlled": false,
+          "layer3dType": "clamped",
+          "description": "",
+          "visibility": false,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "style": {
+            "className": "s2drawings",
+            "color": "undefined",
+            "fillColor": "undefined",
+            "weight": null,
+            "fillOpacity": 1,
+            "opacity": 1
+          },
+          "variables": {},
+          "radius": 1,
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:12Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "ChemCam",
+          "uuid": "87eaf2e7-e3f9-4483-a591-a3cdf460ac6d",
+          "kind": "none",
+          "shape": "none",
+          "type": "vector",
+          "url": "Layers/ChemCam/chemcam.json",
+          "demparser": "",
+          "controlled": false,
+          "layer3dType": "clamped",
+          "description": "",
+          "visibility": true,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "style": {
+            "className": "chemcam",
+            "color": "prop:color1",
+            "fillColor": "prop:color3",
+            "weight": 2,
+            "fillOpacity": 1,
+            "opacity": 1
+          },
+          "variables": {
+            "useKeyAsName": "TARGET",
+            "chemistry": [
+              "Al2O3",
+              "CaO",
+              "FeOT",
+              "K2O",
+              "MgO",
+              "Na2O",
+              "SiO2",
+              "TiO2"
+            ],
+            "search": "(TARGET)"
+          },
+          "radius": 5,
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:12Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "Waypoints",
+          "uuid": "881d3fae-70e3-41b8-bc7a-f8eff5449120",
+          "kind": "none",
+          "shape": "none",
+          "type": "vector",
+          "url": "Layers/Waypoints/waypoints.json",
+          "demparser": "",
+          "controlled": false,
+          "layer3dType": "clamped",
+          "description": "",
+          "legend": "Layers/Waypoints/legend.csv",
+          "visibility": true,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "style": {
+            "className": "waypoints",
+            "color": "white",
+            "fillColor": "#000",
+            "weight": 2,
+            "fillOpacity": 1,
+            "opacity": 1
+          },
+          "variables": {},
+          "radius": 8,
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:12Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "Polygon",
+          "uuid": "9259ed22-bfe3-439a-a5a1-7df48c60b365",
+          "kind": "none",
+          "shape": "none",
+          "type": "vector",
+          "url": "Layers/Polygon/polygon.geojson",
+          "demparser": "",
+          "controlled": false,
+          "layer3dType": "clamped",
+          "description": "",
+          "visibility": false,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "style": {
+            "className": "polygon",
+            "color": "prop:somecolor",
+            "fillColor": "prop:fill",
+            "weight": 2,
+            "fillOpacity": 0.7,
+            "opacity": 1
+          },
+          "variables": {},
+          "radius": 4,
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:12Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "Line",
+          "uuid": "69d3ac79-9525-4073-8f43-eab2873aa4f0",
+          "kind": "none",
+          "shape": "none",
+          "type": "vector",
+          "url": "Layers/Line/line.json",
+          "demparser": "",
+          "controlled": false,
+          "layer3dType": "clamped",
+          "description": "",
+          "visibility": false,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "style": {
+            "className": "line",
+            "color": "white",
+            "fillColor": "white",
+            "weight": 5,
+            "fillOpacity": 1,
+            "opacity": 1
+          },
+          "variables": {},
+          "radius": 1,
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:13Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        },
+        {
+          "name": "Tile with DEM",
+          "uuid": "e2608f70-de7a-4fc7-b541-fd17780ca684",
+          "type": "tile",
+          "url": "Layers/TilewithDEM/Gale_HiRISE/{z}/{x}/{y}.png",
+          "demtileurl": "Layers/TilewithDEM/Gale_HiRISE_DEM/{z}/{x}/{y}.png",
+          "demparser": "",
+          "controlled": false,
+          "description": "",
+          "visibility": true,
+          "initialOpacity": 1,
+          "togglesWithHeader": true,
+          "minZoom": 16,
+          "maxNativeZoom": 17,
+          "maxZoom": 22,
+          "variables": {},
+          "tileformat": "tms",
+          "time": {
+            "enabled": false,
+            "type": "requery",
+            "isRelative": true,
+            "current": "2023-10-07T18:25:13Z",
+            "start": "",
+            "end": "",
+            "startProp": "",
+            "endProp": "",
+            "format": "%Y-%m-%dT%H:%M:%SZ",
+            "compositeTile": false,
+            "refresh": "1 hours",
+            "increment": "5 minutes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maps",
+      "uuid": "74db13f6-0a2c-4b64-82ad-e59ef0c10e38",
+      "type": "tile",
+      "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "demparser": "",
+      "controlled": false,
+      "description": "",
+      "visibility": true,
+      "initialOpacity": 1,
+      "togglesWithHeader": true,
+      "minZoom": 2,
+      "maxNativeZoom": 10,
+      "maxZoom": 10,
+      "variables": {},
+      "tileformat": "wmts",
+      "time": {
+        "enabled": false,
+        "type": "requery",
+        "isRelative": true,
+        "current": "2023-10-07T18:25:13Z",
+        "start": "",
+        "end": "",
+        "startProp": "",
+        "endProp": "",
+        "format": "%Y-%m-%dT%H:%M:%SZ",
+        "compositeTile": false,
+        "refresh": "1 hours",
+        "increment": "5 minutes"
+      }
+    }
+  ],
+  "time": {
+    "enabled": false,
+    "visible": false,
+    "initiallyOpen": false,
+    "format": "",
+    "initialstart": "",
+    "initialend": "",
+    "initialwindowstart": "",
+    "initialwindowend": ""
+  }
+}
